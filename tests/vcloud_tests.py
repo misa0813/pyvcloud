@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 from testconfig import config
 
 from pyvcloud.schema.vcd.v1_5.schemas.vcloud.networkType import ProtocolsType
@@ -147,9 +147,7 @@ class TestVCloud:
         the_vdc = self.vca.get_vdc(vdc_name)
         assert the_vdc
         assert the_vdc.get_name() == vdc_name
-        nets = filter(
-            lambda n: n.name == network,
-            self.vca.get_networks(vdc_name))
+        nets = [n for n in self.vca.get_networks(vdc_name) if n.name == network]
         assert len(nets) == 1
         the_vapp = self.vca.get_vapp(the_vdc, vapp_name)
         assert the_vapp
@@ -168,9 +166,7 @@ class TestVCloud:
         the_vdc = self.vca.get_vdc(vdc_name)
         assert the_vdc
         assert the_vdc.get_name() == vdc_name
-        nets = filter(
-            lambda n: n.name == network,
-            self.vca.get_networks(vdc_name))
+        nets = [n for n in self.vca.get_networks(vdc_name) if n.name == network]
         assert len(nets) == 1
         the_vapp = self.vca.get_vapp(the_vdc, vapp_name)
         assert the_vapp

@@ -23,7 +23,7 @@ from lxml import objectify
 import requests
 import sys
 import time
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 
 SIZE_1MB = 1024*1024
@@ -977,7 +977,7 @@ class _AbstractQuery(object):
             self._filter += equality_filter[0]
             self._filter += '=='
             if sys.version_info[0] < 3:
-                self._filter += urllib.quote(equality_filter[1])
+                self._filter += urllib.parse.quote(equality_filter[1])
             else:
                 self._filter += urllib.parse.quote(equality_filter[1])
 
@@ -1017,7 +1017,7 @@ class _AbstractQuery(object):
         # Make sure we got at least one result record
         try:
             if sys.version_info[0] < 3:
-                item = query_results.next()
+                item = next(query_results)
             else:
                 item = next(query_results)
         except StopIteration:
@@ -1026,7 +1026,7 @@ class _AbstractQuery(object):
         # Make sure we didn't get more than one result record
         try:
             if sys.version_info[0] < 3:
-                query_results.next()
+                next(query_results)
             else:
                 next(query_results)
             raise MultipleRecordsException()

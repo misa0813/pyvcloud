@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 from testconfig import config
 
 from pyvcloud.system import System

@@ -8,16 +8,16 @@ from pyvcloud.helper.CommonUtils import convertPythonObjToStr
 
 def print_vca(vca):
     if vca:
-        print 'vca token:            ', vca.token
+        print('vca token:            ', vca.token)
         if vca.vcloud_session:
-            print 'vcloud session token: ', vca.vcloud_session.token
-            print 'org name:             ', vca.vcloud_session.org
-            print 'org url:              ', vca.vcloud_session.org_url
-            print 'organization:         ', vca.vcloud_session.organization
+            print('vcloud session token: ', vca.vcloud_session.token)
+            print('org name:             ', vca.vcloud_session.org)
+            print('org url:              ', vca.vcloud_session.org_url)
+            print('organization:         ', vca.vcloud_session.organization)
         else:
-            print 'vca vcloud session:   ', vca.vcloud_session
+            print('vca vcloud session:   ', vca.vcloud_session)
     else:
-        print 'vca: ', vca
+        print('vca: ', vca)
 
 host='vcd.cpsbu.eng.vmware.com'
 username = 'administrator'
@@ -42,6 +42,6 @@ print(result)
 
 extension = system.get_extension(extension_name)
 if extension == None:
-    print('extension %s not found' % extension_name)
+    print(('extension %s not found' % extension_name))
 else:
-    print(extension.attrib['name'])
+    print((extension.attrib['name']))

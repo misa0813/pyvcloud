@@ -18,7 +18,7 @@ def wait_for_task(task, task_id):
     while t.get_status() != 'success':
         time.sleep(3)
         t = task.get_task(task_id)
-        print('%s, %s, %s, %s, %s, %s->%s' % (t.get_id().split(':')[-1], t.get_operation(), t.get_Owner().get_name(), t.get_status(), t.get_Progress(), str(t.get_startTime()).split('.')[0], str(t.get_endTime()).split('.')[0]))
+        print(('%s, %s, %s, %s, %s, %s->%s' % (t.get_id().split(':')[-1], t.get_operation(), t.get_Owner().get_name(), t.get_status(), t.get_Progress(), str(t.get_startTime()).split('.')[0], str(t.get_endTime()).split('.')[0])))
 
 host='vcd.cpsbu.eng.vmware.com'   #cpsbu
 username = 'administrator'
@@ -73,12 +73,11 @@ assert(t)
 task_id = t.get_id().split(':')[-1]
 wait_for_task(task, task_id)
 
-nets = filter(lambda n: n.name == network,
-              vca_tenant.get_networks(tenant_vdc))
+nets = [n for n in vca_tenant.get_networks(tenant_vdc) if n.name == network]
 assert(len(nets)==1)
-print("connecting vApp to network"
+print(("connecting vApp to network"
                     " '%s' with mode '%s'" %
-                    (network, mode))
+                    (network, mode)))
 t = the_vapp.connect_to_network(
     nets[0].name, nets[0].href)
 assert(t)
@@ -100,10 +99,8 @@ main_ip = ''
 for vm in the_vapp.me.Children.Vm:
     sections = vm.get_Section()
     virtualHardwareSection = (
-        filter(lambda section:
-               section.__class__.__name__ ==
-               "VirtualHardwareSection_Type",
-               sections)[0])
+        [section for section in sections if section.__class__.__name__ ==
+               "VirtualHardwareSection_Type"][0])
     items = virtualHardwareSection.get_Item()
     _url = '{http://www.vmware.com/vcloud/v1.5}ipAddress'
     for item in items:
@@ -111,7 +108,7 @@ for vm in the_vapp.me.Children.Vm:
             for c in item.Connection:
                 if c.anyAttributes_.get(_url):
                     main_ip = c.anyAttributes_.get(_url)
-print('main_ip=%s' % main_ip)
+print(('main_ip=%s' % main_ip))
 assert(main_ip != '')
 
 cust_script = """

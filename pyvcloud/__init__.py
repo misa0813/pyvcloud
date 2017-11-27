@@ -2,7 +2,7 @@ import tempfile
 import logging
 import requests
 try:
-    import httplib
+    import http.client
 except ImportError:
     import http.client
 

@@ -43,7 +43,7 @@ Verbose_import_ = False
 (
     XMLParser_import_none, XMLParser_import_lxml,
     XMLParser_import_elementtree
-) = range(3)
+) = list(range(3))
 XMLParser_import_library = None
 try:
     # lxml
@@ -381,7 +381,7 @@ except ImportError as exp:
             return None
         @classmethod
         def gds_reverse_node_mapping(cls, mapping):
-            return dict(((v, k) for k, v in mapping.iteritems()))
+            return dict(((v, k) for k, v in mapping.items()))
 
 
 #
@@ -422,7 +422,7 @@ def showIndent(outfile, level, pretty_print=True):
 def quote_xml(inStr):
     if not inStr:
         return ''
-    s1 = (isinstance(inStr, basestring) and inStr or
+    s1 = (isinstance(inStr, str) and inStr or
           '%s' % inStr)
     s1 = s1.replace('&', '&amp;')
     s1 = s1.replace('<', '&lt;')
@@ -431,7 +431,7 @@ def quote_xml(inStr):
 
 
 def quote_attrib(inStr):
-    s1 = (isinstance(inStr, basestring) and inStr or
+    s1 = (isinstance(inStr, str) and inStr or
           '%s' % inStr)
     s1 = s1.replace('&', '&amp;')
     s1 = s1.replace('<', '&lt;')
@@ -713,7 +713,7 @@ class QueryResultRecordType(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='QueryResultRecordType'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -784,7 +784,7 @@ class QueryResultRecordType(GeneratedsSuper):
             already_processed.add('id')
             showIndent(outfile, level)
             outfile.write('id="%s",\n' % (self.id,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -827,7 +827,7 @@ class QueryResultRecordType(GeneratedsSuper):
             already_processed.add('id')
             self.id = value
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         value = find_attr_value_('xsi:type', node)
@@ -1613,7 +1613,7 @@ class QueryResultMediaRecordType(QueryResultRecordType):
         self.isBusy = _cast(bool, isBusy)
         self.owner = _cast(None, owner)
         self.org = _cast(None, org)
-        if isinstance(creationDate, basestring):
+        if isinstance(creationDate, str):
             initvalue_ = datetime_.datetime.strptime(creationDate, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = creationDate
@@ -1919,7 +1919,7 @@ class QueryResultVAppTemplateRecordType(QueryResultRecordType):
         self.isBusy = _cast(bool, isBusy)
         self.org = _cast(None, org)
         self.isExpired = _cast(bool, isExpired)
-        if isinstance(creationDate, basestring):
+        if isinstance(creationDate, str):
             initvalue_ = datetime_.datetime.strptime(creationDate, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = creationDate
@@ -2236,7 +2236,7 @@ class QueryResultVAppRecordType(QueryResultRecordType):
         self.ownerName = _cast(None, ownerName)
         self.isBusy = _cast(bool, isBusy)
         self.isInMaintenanceMode = _cast(bool, isInMaintenanceMode)
-        if isinstance(creationDate, basestring):
+        if isinstance(creationDate, str):
             initvalue_ = datetime_.datetime.strptime(creationDate, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = creationDate
@@ -3602,7 +3602,7 @@ class QueryResultCatalogRecordType(QueryResultRecordType):
         self.ownerName = _cast(None, ownerName)
         self.numberOfMedia = _cast(int, numberOfMedia)
         self.owner = _cast(None, owner)
-        if isinstance(creationDate, basestring):
+        if isinstance(creationDate, str):
             initvalue_ = datetime_.datetime.strptime(creationDate, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = creationDate
@@ -5596,7 +5596,7 @@ class QueryResultEventRecordType(QueryResultRecordType):
         self.entityType = _cast(None, entityType)
         self.entity = _cast(None, entity)
         self.eventStatus = _cast(int, eventStatus)
-        if isinstance(timeStamp, basestring):
+        if isinstance(timeStamp, str):
             initvalue_ = datetime_.datetime.strptime(timeStamp, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = timeStamp
@@ -6686,7 +6686,7 @@ class QueryResultCellRecordType(QueryResultRecordType):
         self.isVMwareVc = _cast(int, isVMwareVc)
         self.primaryIp = _cast(None, primaryIp)
         self.isActive = _cast(int, isActive)
-        if isinstance(buildDate, basestring):
+        if isinstance(buildDate, str):
             initvalue_ = datetime_.datetime.strptime(buildDate, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = buildDate
@@ -7432,7 +7432,7 @@ class QueryResultAdminVAppRecordType(QueryResultRecordType):
         self.memoryAllocationMB = _cast(int, memoryAllocationMB)
         self.org = _cast(None, org)
         self.isInMaintenanceMode = _cast(bool, isInMaintenanceMode)
-        if isinstance(creationDate, basestring):
+        if isinstance(creationDate, str):
             initvalue_ = datetime_.datetime.strptime(creationDate, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = creationDate
@@ -9927,7 +9927,7 @@ class QueryResultAdminCatalogRecordType(QueryResultRecordType):
         self.numberOfMedia = _cast(int, numberOfMedia)
         self.owner = _cast(None, owner)
         self.org = _cast(None, org)
-        if isinstance(creationDate, basestring):
+        if isinstance(creationDate, str):
             initvalue_ = datetime_.datetime.strptime(creationDate, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = creationDate
@@ -10160,7 +10160,7 @@ class QueryResultAdminCatalogItemRecordType(QueryResultRecordType):
         super(QueryResultAdminCatalogItemRecordType, self).__init__(href, type_, id, Link, Metadata, )
         self.status = _cast(None, status)
         self.vdcName = _cast(None, vdcName)
-        if isinstance(creationDate, basestring):
+        if isinstance(creationDate, str):
             initvalue_ = datetime_.datetime.strptime(creationDate, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = creationDate
@@ -10480,7 +10480,7 @@ class QueryResultCatalogItemRecordType(QueryResultRecordType):
         super(QueryResultCatalogItemRecordType, self).__init__(href, type_, id, Link, Metadata, )
         self.status = _cast(None, status)
         self.vdcName = _cast(None, vdcName)
-        if isinstance(creationDate, basestring):
+        if isinstance(creationDate, str):
             initvalue_ = datetime_.datetime.strptime(creationDate, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = creationDate
@@ -10798,7 +10798,7 @@ class QueryResultAdminMediaRecordType(QueryResultRecordType):
         self.isBusy = _cast(bool, isBusy)
         self.owner = _cast(None, owner)
         self.org = _cast(None, org)
-        if isinstance(creationDate, basestring):
+        if isinstance(creationDate, str):
             initvalue_ = datetime_.datetime.strptime(creationDate, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = creationDate
@@ -11128,7 +11128,7 @@ class QueryResultAdminVAppTemplateRecordType(QueryResultRecordType):
         self.owner = _cast(None, owner)
         self.org = _cast(None, org)
         self.isExpired = _cast(bool, isExpired)
-        if isinstance(creationDate, basestring):
+        if isinstance(creationDate, str):
             initvalue_ = datetime_.datetime.strptime(creationDate, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = creationDate
@@ -11793,12 +11793,12 @@ class QueryResultTaskRecordType(QueryResultRecordType):
         self.original_tagname_ = None
         super(QueryResultTaskRecordType, self).__init__(href, type_, id, Link, Metadata, )
         self.status = _cast(None, status)
-        if isinstance(startDate, basestring):
+        if isinstance(startDate, str):
             initvalue_ = datetime_.datetime.strptime(startDate, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = startDate
         self.startDate = initvalue_
-        if isinstance(endDate, basestring):
+        if isinstance(endDate, str):
             initvalue_ = datetime_.datetime.strptime(endDate, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = endDate
@@ -12034,12 +12034,12 @@ class QueryResultAdminTaskRecordType(QueryResultRecordType):
         self.original_tagname_ = None
         super(QueryResultAdminTaskRecordType, self).__init__(href, type_, id, Link, Metadata, )
         self.status = _cast(None, status)
-        if isinstance(startDate, basestring):
+        if isinstance(startDate, str):
             initvalue_ = datetime_.datetime.strptime(startDate, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = startDate
         self.startDate = initvalue_
-        if isinstance(endDate, basestring):
+        if isinstance(endDate, str):
             initvalue_ = datetime_.datetime.strptime(endDate, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = endDate
@@ -12331,12 +12331,12 @@ class QueryResultBlockingTaskRecordType(QueryResultRecordType):
         self.jobStatus = _cast(None, jobStatus)
         self.ownerName = _cast(None, ownerName)
         self.owner = _cast(None, owner)
-        if isinstance(expirationTime, basestring):
+        if isinstance(expirationTime, str):
             initvalue_ = datetime_.datetime.strptime(expirationTime, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = expirationTime
         self.expirationTime = initvalue_
-        if isinstance(creationDate, basestring):
+        if isinstance(creationDate, str):
             initvalue_ = datetime_.datetime.strptime(creationDate, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = creationDate
@@ -13423,7 +13423,7 @@ class QueryResultConditionRecordType(QueryResultRecordType):
         super(QueryResultConditionRecordType, self).__init__(href, type_, id, Link, Metadata, )
         self.severity = _cast(None, severity)
         self.object = _cast(None, object)
-        if isinstance(occurenceDate, basestring):
+        if isinstance(occurenceDate, str):
             initvalue_ = datetime_.datetime.strptime(occurenceDate, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = occurenceDate
@@ -13592,7 +13592,7 @@ class QueryResultAdminEventRecordType(QueryResultRecordType):
         self.entityType = _cast(None, entityType)
         self.entity = _cast(None, entity)
         self.eventStatus = _cast(int, eventStatus)
-        if isinstance(timeStamp, basestring):
+        if isinstance(timeStamp, str):
             initvalue_ = datetime_.datetime.strptime(timeStamp, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = timeStamp
@@ -13834,7 +13834,7 @@ class QueryResultStrandedItemRecordType(QueryResultRecordType):
     def __init__(self, href=None, type_=None, id=None, Link=None, Metadata=None, deletionDate=None, vimObjectType=None, name=None, parent=None, parentName=None, numberOfPurgeAttempts=None):
         self.original_tagname_ = None
         super(QueryResultStrandedItemRecordType, self).__init__(href, type_, id, Link, Metadata, )
-        if isinstance(deletionDate, basestring):
+        if isinstance(deletionDate, str):
             initvalue_ = datetime_.datetime.strptime(deletionDate, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = deletionDate
@@ -17813,7 +17813,7 @@ class VCloudExtensionType(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='VCloudExtensionType'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -17864,7 +17864,7 @@ class VCloudExtensionType(GeneratedsSuper):
             already_processed.add('required')
             showIndent(outfile, level)
             outfile.write('required=%s,\n' % (self.required,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -17894,7 +17894,7 @@ class VCloudExtensionType(GeneratedsSuper):
             else:
                 raise_parse_error(node, 'Bad boolean attribute')
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -17959,7 +17959,7 @@ class VCloudExtensibleType(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='VCloudExtensibleType'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -18008,7 +18008,7 @@ class VCloudExtensibleType(GeneratedsSuper):
         if self.hasContent_():
             self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -18033,7 +18033,7 @@ class VCloudExtensibleType(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         value = find_attr_value_('xsi:type', node)
@@ -20328,7 +20328,7 @@ class MetadataDateTimeValue(MetadataTypedValue):
     def __init__(self, Value=None):
         self.original_tagname_ = None
         super(MetadataDateTimeValue, self).__init__()
-        if isinstance(Value, basestring):
+        if isinstance(Value, str):
             initvalue_ = datetime_.datetime.strptime(Value, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = Value
@@ -21392,19 +21392,19 @@ class TaskType(EntityType):
         super(TaskType, self).__init__(VCloudExtension, href, type_, Link, operationKey, id, name, Description, Tasks, )
         self.status = _cast(None, status)
         self.operationName = _cast(None, operationName)
-        if isinstance(expiryTime, basestring):
+        if isinstance(expiryTime, str):
             initvalue_ = datetime_.datetime.strptime(expiryTime, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = expiryTime
         self.expiryTime = initvalue_
         self.cancelRequested = _cast(bool, cancelRequested)
-        if isinstance(startTime, basestring):
+        if isinstance(startTime, str):
             initvalue_ = datetime_.datetime.strptime(startTime, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = startTime
         self.startTime = initvalue_
         self.operation = _cast(None, operation)
-        if isinstance(endTime, basestring):
+        if isinstance(endTime, str):
             initvalue_ = datetime_.datetime.strptime(endTime, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = endTime
@@ -22499,7 +22499,7 @@ Usage: python <Parser>.py [ -s ] <in_xml_file>
 
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(1)
 
 
@@ -22555,7 +22555,7 @@ def parseEtree(inFileName, silence=False):
 
 
 def parseString(inString, silence=False):
-    from StringIO import StringIO
+    from io import StringIO
     doc = parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)

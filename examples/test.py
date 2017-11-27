@@ -10,7 +10,7 @@ def host_type():
     return result
 
 if __name__ == '__main__':
-    print ("Fabric v%(version)s" % env)
+    print(("Fabric v%(version)s" % env))
     env.user = 'root'
     env.password = 'my_secure_password'
     env.hosts = ['192.168.3.231']

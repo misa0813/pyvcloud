@@ -9,16 +9,16 @@ from lxml import etree
 
 def print_vca(vca):
     if vca:
-        print 'vca token:            ', vca.token
+        print('vca token:            ', vca.token)
         if vca.vcloud_session:
-            print 'vcloud session token: ', vca.vcloud_session.token
-            print 'org name:             ', vca.vcloud_session.org
-            print 'org url:              ', vca.vcloud_session.org_url
-            print 'organization:         ', vca.vcloud_session.organization
+            print('vcloud session token: ', vca.vcloud_session.token)
+            print('org name:             ', vca.vcloud_session.org)
+            print('org url:              ', vca.vcloud_session.org_url)
+            print('organization:         ', vca.vcloud_session.organization)
         else:
-            print 'vca vcloud session:   ', vca.vcloud_session
+            print('vca vcloud session:   ', vca.vcloud_session)
     else:
-        print 'vca: ', vca
+        print('vca: ', vca)
 
 host='vcd.cpsbu.eng.vmware.com'
 username = 'usr1'
@@ -41,6 +41,6 @@ the_vdc = vca.get_vdc(vdc)
 for entity in the_vdc.get_ResourceEntities().ResourceEntity:
     if entity.type_ == 'application/vnd.vmware.vcloud.vApp+xml':
         if entity.name == name:
-            print('name=%s, href=%s' % (entity.name, entity.href))
+            print(('name=%s, href=%s' % (entity.name, entity.href)))
             result = vca.del_vapp_metadata(entity.href, key)
             print(result)

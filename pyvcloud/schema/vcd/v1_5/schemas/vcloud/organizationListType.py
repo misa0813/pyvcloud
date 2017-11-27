@@ -47,7 +47,7 @@ Verbose_import_ = False
 (
     XMLParser_import_none, XMLParser_import_lxml,
     XMLParser_import_elementtree
-) = range(3)
+) = list(range(3))
 XMLParser_import_library = None
 try:
     # lxml
@@ -404,7 +404,7 @@ except ImportError as exp:
             return None
         @classmethod
         def gds_reverse_node_mapping(cls, mapping):
-            return dict(((v, k) for k, v in mapping.iteritems()))
+            return dict(((v, k) for k, v in mapping.items()))
 
 
 #
@@ -445,7 +445,7 @@ def showIndent(outfile, level, pretty_print=True):
 def quote_xml(inStr):
     if not inStr:
         return ''
-    s1 = (isinstance(inStr, basestring) and inStr or
+    s1 = (isinstance(inStr, str) and inStr or
           '%s' % inStr)
     s1 = s1.replace('&', '&amp;')
     s1 = s1.replace('<', '&lt;')
@@ -454,7 +454,7 @@ def quote_xml(inStr):
 
 
 def quote_attrib(inStr):
-    s1 = (isinstance(inStr, basestring) and inStr or
+    s1 = (isinstance(inStr, str) and inStr or
           '%s' % inStr)
     s1 = s1.replace('&', '&amp;')
     s1 = s1.replace('<', '&lt;')
@@ -719,7 +719,7 @@ class VCloudExtensionType(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='VCloudExtensionType'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -770,7 +770,7 @@ class VCloudExtensionType(GeneratedsSuper):
             already_processed.add('required')
             showIndent(outfile, level)
             outfile.write('required=%s,\n' % (self.required,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -800,7 +800,7 @@ class VCloudExtensionType(GeneratedsSuper):
             else:
                 raise_parse_error(node, 'Bad boolean attribute')
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -865,7 +865,7 @@ class VCloudExtensibleType(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='VCloudExtensibleType'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -914,7 +914,7 @@ class VCloudExtensibleType(GeneratedsSuper):
         if self.hasContent_():
             self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -939,7 +939,7 @@ class VCloudExtensibleType(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         value = find_attr_value_('xsi:type', node)
@@ -3234,7 +3234,7 @@ class MetadataDateTimeValue(MetadataTypedValue):
     def __init__(self, Value=None):
         self.original_tagname_ = None
         super(MetadataDateTimeValue, self).__init__()
-        if isinstance(Value, basestring):
+        if isinstance(Value, str):
             initvalue_ = datetime_.datetime.strptime(Value, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = Value
@@ -4298,19 +4298,19 @@ class TaskType(EntityType):
         super(TaskType, self).__init__(VCloudExtension, href, type_, Link, operationKey, id, name, Description, Tasks, )
         self.status = _cast(None, status)
         self.operationName = _cast(None, operationName)
-        if isinstance(expiryTime, basestring):
+        if isinstance(expiryTime, str):
             initvalue_ = datetime_.datetime.strptime(expiryTime, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = expiryTime
         self.expiryTime = initvalue_
         self.cancelRequested = _cast(bool, cancelRequested)
-        if isinstance(startTime, basestring):
+        if isinstance(startTime, str):
             initvalue_ = datetime_.datetime.strptime(startTime, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = startTime
         self.startTime = initvalue_
         self.operation = _cast(None, operation)
-        if isinstance(endTime, basestring):
+        if isinstance(endTime, str):
             initvalue_ = datetime_.datetime.strptime(endTime, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = endTime
@@ -4941,7 +4941,7 @@ Usage: python <Parser>.py [ -s ] <in_xml_file>
 
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(1)
 
 
@@ -4997,7 +4997,7 @@ def parseEtree(inFileName, silence=False):
 
 
 def parseString(inString, silence=False):
-    from StringIO import StringIO
+    from io import StringIO
     doc = parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)

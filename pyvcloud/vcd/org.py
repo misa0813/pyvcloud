@@ -400,7 +400,7 @@ class Org(object):
                                 callback=callback)
             shutil.rmtree(tempdir)
         except Exception as e:
-            print(traceback.format_exc())
+            print((traceback.format_exc()))
             shutil.rmtree(tempdir)
             raise e
         return total_bytes

@@ -18,7 +18,7 @@ from pyvcloud import Http
 from pyvcloud.schema.vcd.v1_5.schemas.vcloud import tasksListType
 from pyvcloud.schema.vcd.v1_5.schemas.vcloud import taskType
 import requests
-from urlparse import urlparse
+from urllib.parse import urlparse
 
 
 class Task(object):
@@ -39,9 +39,7 @@ class Task(object):
 
     def get_tasks(self, status=statuses[0]):
         if self.vcloud_session and self.vcloud_session.organization:
-            refs = filter(lambda ref:
-                    ref.type_ == 'application/vnd.vmware.vcloud.tasksList+xml',
-                    self.vcloud_session.organization.Link)
+            refs = [ref for ref in self.vcloud_session.organization.Link if ref.type_ == 'application/vnd.vmware.vcloud.tasksList+xml']
             if len(refs) == 1:
                 self.response = Http.get(refs[0].href,
                     headers=self.vcloud_session.get_vcloud_headers(),

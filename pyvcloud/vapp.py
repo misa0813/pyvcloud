@@ -17,15 +17,16 @@
 
 import time
 import requests
-from StringIO import StringIO
-from schema.vcd.v1_5.schemas.vcloud import vAppType, vdcType, queryRecordViewType, taskType, vcloudType
-from schema.vcd.v1_5.schemas.vcloud.taskType import TaskType
-from schema.vcd.v1_5.schemas.vcloud.vAppType import VAppType, NetworkConnectionSectionType
+from io import StringIO
+from .schema.vcd.v1_5.schemas.vcloud import vAppType, vdcType, queryRecordViewType, taskType, vcloudType
+from .schema.vcd.v1_5.schemas.vcloud.taskType import TaskType
+from .schema.vcd.v1_5.schemas.vcloud.vAppType import VAppType, NetworkConnectionSectionType
 from pyvcloud.schema.vcim import errorType
 from iptools import ipv4, IpRange
 from pyvcloud.helper import CommonUtils
 from pyvcloud import _get_logger, Http, Log
 import copy
+from functools import reduce
 
 VCLOUD_STATUS_MAP = {
     -1: "Could not be created",
@@ -74,8 +75,8 @@ class VAPP(object):
 
         """
         vApp = targetVM if targetVM else self.me
-        link = filter(lambda link: link.get_rel()
-                      == operation, vApp.get_Link())
+        link = [link for link in vApp.get_Link() if link.get_rel()
+                      == operation]
         if not link:
             Log.error(self.logger, "link not found; rel=%s" % operation)
             Log.debug(
@@ -398,9 +399,7 @@ class VAPP(object):
                     name_='NetworkConnectionSection',
                     namespacedef_='xmlns="http://www.vmware.com/vcloud/v1.5" xmlns:vmw="http://www.vmware.com/vcloud/v1.5" xmlns:ovf="http://schemas.dmtf.org/ovf/envelope/1"',
                     pretty_print=True)
-                link = filter(
-                    lambda link: link.get_rel() == 'edit',
-                    networkConnectionSection.get_Link())
+                link = [link for link in networkConnectionSection.get_Link() if link.get_rel() == 'edit']
                 body = output.getvalue().replace("vmw:Info", "ovf:Info")
                 headers = self.headers
                 headers['Content-type'] = link[0].get_type()
@@ -830,7 +829,7 @@ class VAPP(object):
             vms = [vm for vm in children.get_Vm() if vm.name == vm_name]
             if len(vms) == 1:
                 sections = vms[0].get_Section()
-                links = filter(lambda link: link.rel == "deploy", vms[0].Link)
+                links = [link for link in vms[0].Link if link.rel == "deploy"]
                 if len(links) == 1:
                     forceCustomizationValue = 'true'
                     deployVAppParams = vcloudType.DeployVAppParamsType()
@@ -875,9 +874,7 @@ class VAPP(object):
         for vm in vms:
             nw_connections = []
             sections = vm.get_Section()
-            networkConnectionSection = filter(
-                lambda section: section.__class__.__name__ == "NetworkConnectionSectionType",
-                sections)[0]
+            networkConnectionSection = [section for section in sections if section.__class__.__name__ == "NetworkConnectionSectionType"][0]
             primary_index = networkConnectionSection.get_PrimaryNetworkConnectionIndex()
             connections = networkConnectionSection.get_NetworkConnection()
             for connection in connections:
@@ -904,8 +901,7 @@ class VAPP(object):
 
         """
         vm = self._get_vms()[0]
-        link = filter(lambda link: link.get_rel() == "customizeAtNextPowerOn",
-                      vm.get_Link())
+        link = [link for link in vm.get_Link() if link.get_rel() == "customizeAtNextPowerOn"]
         if link:
             self.response = Http.post(link[0].get_href(), data=None,
                                       verify=self.verify, headers=self.headers,
@@ -940,7 +936,7 @@ class VAPP(object):
                     es = e.get_Section()
                     property_section = None
                     try:
-                        property_section = filter(lambda section: section.__class__.__name__ == 'PropertySection_Type', es)[0]
+                        property_section = [section for section in es if section.__class__.__name__ == 'PropertySection_Type'][0]
                     except IndexError:
                         pass
                     if property_section:
@@ -950,32 +946,26 @@ class VAPP(object):
                                   prop.anyAttributes_['{http://schemas.dmtf.org/ovf/environment/1}key']:
                                   prop.anyAttributes_['{http://schemas.dmtf.org/ovf/environment/1}value']}
                                   )
-                virtualHardwareSection = filter(
-                    lambda section: section.__class__.__name__ == "VirtualHardwareSection_Type",
-                    sections)[0]
+                virtualHardwareSection = [section for section in sections if section.__class__.__name__ == "VirtualHardwareSection_Type"][0]
                 items = virtualHardwareSection.get_Item()
 
-                cpu = filter(lambda item: item.get_Description().get_valueOf_()
-                             == "Number of Virtual CPUs", items)[0]
+                cpu = [item for item in items if item.get_Description().get_valueOf_()
+                             == "Number of Virtual CPUs"][0]
                 cpu_capacity = int(
                     cpu.get_ElementName().get_valueOf_().split(" virtual CPU(s)")[0])
 
-                memory = filter(lambda item: item.get_Description(
-                ).get_valueOf_() == "Memory Size", items)[0]
+                memory = [item for item in items if item.get_Description(
+                ).get_valueOf_() == "Memory Size"][0]
                 memory_capacity_mb = int(
                     memory.get_ElementName().get_valueOf_().split(" MB of memory")[0])
                 memory_capacity = memory_capacity_mb / 1024
 
-                operatingSystemSection = filter(
-                    lambda section: section.__class__.__name__ == "OperatingSystemSection_Type",
-                    sections)[0]
+                operatingSystemSection = [section for section in sections if section.__class__.__name__ == "OperatingSystemSection_Type"][0]
                 os = operatingSystemSection.get_Description().get_valueOf_()
 
-                customization_section = filter(
-                    lambda section: section.__class__.__name__ == "GuestCustomizationSectionType",
-                    sections)[0]
+                customization_section = [section for section in sections if section.__class__.__name__ == "GuestCustomizationSectionType"][0]
 
-                hdd = filter(lambda item: item.get_Description().get_valueOf_() == "Hard disk", items)
+                hdd = [item for item in items if item.get_Description().get_valueOf_() == "Hard disk"]
                 hdd_capacity_mb = 0
                 for hdd_item in hdd:
                     hdd_capacity_mb += int(hdd_item.get_HostResource()[0].get_anyAttributes_().get('{http://www.vmware.com/vcloud/v1.5}capacity'))
@@ -1060,12 +1050,10 @@ class VAPP(object):
             if len(vms) == 1:
                 vm = vms[0]
                 sections = vm.get_Section()
-                virtualHardwareSection = filter(
-                    lambda section: section.__class__.__name__ == "VirtualHardwareSection_Type",
-                    sections)[0]
+                virtualHardwareSection = [section for section in sections if section.__class__.__name__ == "VirtualHardwareSection_Type"][0]
                 items = virtualHardwareSection.get_Item()
-                memory = filter(lambda item: item.get_Description(
-                ).get_valueOf_() == "Memory Size", items)[0]
+                memory = [item for item in items if item.get_Description(
+                ).get_valueOf_() == "Memory Size"][0]
                 href = memory.get_anyAttributes_().get(
                     '{http://www.vmware.com/vcloud/v1.5}href')
                 en = memory.get_ElementName()
@@ -1125,12 +1113,10 @@ class VAPP(object):
             if len(vms) == 1:
                 vm = vms[0]
                 sections = vm.get_Section()
-                virtualHardwareSection = filter(
-                    lambda section: section.__class__.__name__ == "VirtualHardwareSection_Type",
-                    sections)[0]
+                virtualHardwareSection = [section for section in sections if section.__class__.__name__ == "VirtualHardwareSection_Type"][0]
                 items = virtualHardwareSection.get_Item()
-                cpu = filter(lambda item: (item.get_anyAttributes_().get('{http://www.vmware.com/vcloud/v1.5}href') is not None and item.get_anyAttributes_(
-                ).get('{http://www.vmware.com/vcloud/v1.5}href').endswith('/virtualHardwareSection/cpu')), items)[0]
+                cpu = [item for item in items if (item.get_anyAttributes_().get('{http://www.vmware.com/vcloud/v1.5}href') is not None and item.get_anyAttributes_(
+                ).get('{http://www.vmware.com/vcloud/v1.5}href').endswith('/virtualHardwareSection/cpu'))][0]
                 href = cpu.get_anyAttributes_().get(
                     '{http://www.vmware.com/vcloud/v1.5}href')
                 en = cpu.get_ElementName()
@@ -1194,8 +1180,7 @@ class VAPP(object):
                     error = errorType.parseString(self.response.content, True)
                     raise Exception(error.message)
 
-                disks = filter(lambda x: x.get_Description().get_valueOf_() == 'Hard disk',
-                               diskItemsList.get_Item())
+                disks = [x for x in diskItemsList.get_Item() if x.get_Description().get_valueOf_() == 'Hard disk']
 
                 if len(disks) > 0:
                     lastDisk = reduce(lambda a, b:

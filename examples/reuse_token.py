@@ -20,4 +20,4 @@ assert(vca_tenant)
 result = vca_tenant.login(token=vcloud_token, org='', org_url=org_url)
 assert(result == True)
 o = vca_tenant.vcloud_session.organization
-print('this is org: %s' % o.get_name())
+print(('this is org: %s' % o.get_name()))

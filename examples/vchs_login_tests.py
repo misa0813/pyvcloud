@@ -21,8 +21,8 @@ assert result
 vdc = 'M684216431-4470'
 the_vdc = vca.get_vdc(vdc)
 assert the_vdc
-print 'vdc name: ' + the_vdc.get_name()
-print 'catalogs: '
+print('vdc name: ' + the_vdc.get_name())
+print('catalogs: ')
 for catalog in vca.get_catalogs():
-    print '  - ' + catalog.get_name()
+    print('  - ' + catalog.get_name())
 

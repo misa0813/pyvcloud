@@ -45,8 +45,8 @@ progress       = 1
 status         = 'running'
 
 
-print(status, namespace, operation_name, operation_description, owner_href, owner_name, owner_type, user_id, user_name, progress, org_id)
+print((status, namespace, operation_name, operation_description, owner_href, owner_name, owner_type, user_id, user_name, progress, org_id))
 
 task = Task(session=vca_system.vcloud_session, verify=verify, log=log)
 t = task.create_or_update_task(status, namespace, operation_name, operation_description, owner_href, owner_name, owner_type, user_id, user_name, progress, org_id=org_id)
-print(t.get_id().split(':')[-1])
+print((t.get_id().split(':')[-1]))

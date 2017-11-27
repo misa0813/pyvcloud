@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 from nose.tools import with_setup
 from testconfig import config
 from pyvcloud import vcloudair

@@ -40,7 +40,7 @@ class TestDisk(TestCase):
         disks = vdc.get_disks()
         
         for disk in disks:
-            print (" Disk: " + str(etree.tostring(disk, pretty_print=True), "utf-8"))
+            print((" Disk: " + str(etree.tostring(disk, pretty_print=True), "utf-8")))
 
         assert len(disks) > 0 
 
@@ -86,7 +86,7 @@ class TestDisk(TestCase):
                                 callback=None)
         assert task.get('status') == TaskStatus.SUCCESS.value
 
-        print ("Updating VDC disk: " + str(etree.tostring(task, pretty_print=True), "utf-8"))
+        print(("Updating VDC disk: " + str(etree.tostring(task, pretty_print=True), "utf-8")))
 
     def test_008_update_disk_iops(self):
         logged_in_org = self.client.get_org()
@@ -113,7 +113,7 @@ class TestDisk(TestCase):
             callback=None)
         assert task.get('status') == TaskStatus.SUCCESS.value
 
-        print ("Updating VDC disk: " + str(etree.tostring(task, pretty_print=True), "utf-8"))
+        print(("Updating VDC disk: " + str(etree.tostring(task, pretty_print=True), "utf-8")))
 
     def test_008_update_disk_storage_profile(self):
         logged_in_org = self.client.get_org()
@@ -137,7 +137,7 @@ class TestDisk(TestCase):
             callback=None)
         assert task.get('status') == TaskStatus.SUCCESS.value
 
-        print ("Updating VDC disk: " + str(etree.tostring(task, pretty_print=True), "utf-8"))
+        print(("Updating VDC disk: " + str(etree.tostring(task, pretty_print=True), "utf-8")))
 
     def test_008_get_disk_by_id(self):
 
@@ -177,7 +177,7 @@ class TestDisk(TestCase):
         vdc = VDC(self.client, href=v.get('href'))
 
         profile = vdc.get_storage_profile(self.config['vcd']['storage_profile'])
-        print("Storage Profile: " + str(profile))
+        print(("Storage Profile: " + str(profile)))
         assert profile.get('name') == self.config['vcd']['storage_profile']
 
     def test_111_change_owner_disk(self):

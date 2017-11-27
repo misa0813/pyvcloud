@@ -72,7 +72,7 @@ class VSphere(object):
                     time.sleep(wait_time)
             except Exception:
                 import traceback
-                print(traceback.format_exc())
+                print((traceback.format_exc()))
                 print('will retry again in a few seconds')
                 time.sleep(wait_time*3)
 

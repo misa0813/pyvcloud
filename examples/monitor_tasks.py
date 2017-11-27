@@ -14,19 +14,19 @@ from lxml import etree
 import sys
 
 def ddump(r):
-    print etree.tostring(r, pretty_print=True)
-    print '------------------------'
+    print(etree.tostring(r, pretty_print=True))
+    print('------------------------')
 
 
 def _print(r):
     root = r
     # print('%s %s %s'% (root.tag, root.attrib['id'], root.attrib['name']))
-    print(root.tag)
-    print(root.attrib['name'])
-    print(root.attrib['status'])
-    print(root.attrib['orgName'])
-    if 'objectName' in root.attrib: print(root.attrib['objectName'])
-    print(root.attrib['ownerName'])
+    print((root.tag))
+    print((root.attrib['name']))
+    print((root.attrib['status']))
+    print((root.attrib['orgName']))
+    if 'objectName' in root.attrib: print((root.attrib['objectName']))
+    print((root.attrib['ownerName']))
     print('---')
 
 
@@ -58,7 +58,7 @@ client = vcloud_client.Client(
 
 client.set_credentials(vcloud_client.BasicLoginCredentials(user, org, password))
 
-print(client._session.headers['x-vcloud-authorization'])
+print((client._session.headers['x-vcloud-authorization']))
 
 # admin = client.get_admin()
 # ddump(admin)
@@ -78,12 +78,12 @@ for r in qr:
     _print(r)
     # ddump(r)
     org = r.attrib['orgName']
-    if org not in per_org.keys():
+    if org not in list(per_org.keys()):
         per_org[org] = 0
     per_org[org] = per_org[org] + 1
 
 per_org['_total'] = n
-print(json.dumps(per_org))
+print((json.dumps(per_org)))
 
 sys.exit(0)
 
@@ -105,7 +105,7 @@ vca_system = VCA(host=host, username=username, service_type='standalone', versio
 
 result = vca_system.login(password=password, org=org, org_url=org_url)
 result = vca_system.login(token=vca_system.token, org=org, org_url=vca_system.vcloud_session.org_url)
-print('connected: %s' % result)
+print(('connected: %s' % result))
 
 # while True:
 #     print('querying pending and running tasks.')

@@ -5,27 +5,27 @@ from pyvcloud.vcloudair import VCA
 
 def print_vca(vca):
     if vca:
-        print 'vca token:            ', vca.token
+        print('vca token:            ', vca.token)
         if vca.vcloud_session:
-            print 'vcloud session token: ', vca.vcloud_session.token
-            print 'org name:             ', vca.vcloud_session.org
-            print 'org url:              ', vca.vcloud_session.org_url
-            print 'organization:         ', vca.vcloud_session.organization
+            print('vcloud session token: ', vca.vcloud_session.token)
+            print('org name:             ', vca.vcloud_session.org)
+            print('org url:              ', vca.vcloud_session.org_url)
+            print('organization:         ', vca.vcloud_session.organization)
         else:
-            print 'vca vcloud session:   ', vca.vcloud_session
+            print('vca vcloud session:   ', vca.vcloud_session)
     else:
-        print 'vca: ', vca
+        print('vca: ', vca)
 
 def test_vcloud_session(vca, vdc, vapp):
     the_vdc = vca.get_vdc(vdc)
     for x in range(1, 5):
-        print datetime.datetime.now(), the_vdc.get_name(), vca.vcloud_session.token
+        print(datetime.datetime.now(), the_vdc.get_name(), vca.vcloud_session.token)
         the_vdc = vca.get_vdc(vdc)
-        if the_vdc: print the_vdc.get_name(), vca.vcloud_session.token
-        else: print False
+        if the_vdc: print(the_vdc.get_name(), vca.vcloud_session.token)
+        else: print(False)
         the_vapp = vca.get_vapp(the_vdc, vapp)
-        if the_vapp: print the_vapp.me.name
-        else: print False
+        if the_vapp: print(the_vapp.me.name)
+        else: print(False)
         time.sleep(2)
 
 

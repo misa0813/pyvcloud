@@ -371,7 +371,7 @@ class VDC(object):
 
         if storage_profile_name is not None:
             storage_profile = self.get_storage_profile(storage_profile_name)
-            print(etree.tostring(storage_profile, pretty_print=True))
+            print((etree.tostring(storage_profile, pretty_print=True)))
             diskParms.Disk.append(storage_profile)
             # etree.SubElement(diskParms.Disk, 'StorageProfile')
             # diskParms.Disk.append(
@@ -383,7 +383,7 @@ class VDC(object):
             # diskParms.Disk.StorageProfile.attrib['type'] =
             # storage_profile.get('type')
 
-            print(etree.tostring(diskParms, pretty_print=True))
+            print((etree.tostring(diskParms, pretty_print=True)))
 
         return self.client.post_linked_resource(
             self.resource,

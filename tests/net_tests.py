@@ -1,5 +1,5 @@
-from __future__ import print_function
-from __future__ import print_function
+
+
 
 from testconfig import config
 
@@ -105,8 +105,7 @@ class TestNet:
 
         index = 0
         the_vapp = self.vca.get_vapp(the_vdc, vapp_name)
-        nets = filter(lambda n: n.name == network_name,
-                      self.vca.get_networks(vdc_name))
+        nets = [n for n in self.vca.get_networks(vdc_name) if n.name == network_name]
         mode = 'POOL'
         if len(nets) == 1:
             print("connecting vApp to network"
@@ -130,8 +129,7 @@ class TestNet:
             assert result
 
         index = index + 1
-        nets = filter(lambda n: n.name == network_name2,
-                      self.vca.get_networks(vdc_name))
+        nets = [n for n in self.vca.get_networks(vdc_name) if n.name == network_name2]
         mode = 'POOL'
         if len(nets) == 1:
             print("connecting vApp to network"
@@ -155,8 +153,7 @@ class TestNet:
             assert result
 
         index = index + 1
-        nets = filter(lambda n: n.name == network_name3,
-                      self.vca.get_networks(vdc_name))
+        nets = [n for n in self.vca.get_networks(vdc_name) if n.name == network_name3]
         mode = 'POOL'
         if len(nets) == 1:
             print("connecting vApp to network"

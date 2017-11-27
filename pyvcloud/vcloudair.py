@@ -28,7 +28,7 @@ from progressbar import AnimatedMarker, Bar, BouncingBar, Counter, ETA, \
     FileTransferSpeed, FormatLabel, Percentage, \
     ProgressBar, ReverseBar, RotatingMarker, \
     SimpleProgress, Timer
-from StringIO import StringIO
+from io import StringIO
 import json
 from xml.etree import ElementTree as ET
 from pyvcloud.schema.vcd.v1_5.schemas.admin import vCloudEntities
@@ -37,7 +37,7 @@ from pyvcloud.schema.vcim import errorType
 from pyvcloud.schema.vcd.v1_5.schemas.vcloud import sessionType, organizationType, \
     vAppType, organizationListType, vdcType, catalogType, queryRecordViewType, \
     networkType, vcloudType, taskType, diskType, vmsType, vdcTemplateListType, mediaType
-from schema.vcd.v1_5.schemas.vcloud.diskType import OwnerType, DiskType, VdcStorageProfileType, DiskCreateParamsType
+from .schema.vcd.v1_5.schemas.vcloud.diskType import OwnerType, DiskType, VdcStorageProfileType, DiskCreateParamsType
 from pyvcloud.schema.vcd.schemas.versioning import versionsType
 from pyvcloud.vcloudsession import VCS
 from pyvcloud.vapp import VAPP
@@ -646,7 +646,7 @@ class VCA(object):
             headers=self._get_vcloud_headers(),
             verify=self.verify,
             logger=self.logger)
-        print(self.response.status_code, self.response.content)
+        print((self.response.status_code, self.response.content))
 
     def login_to_instance(self, instance, password, token=None, org_url=None):
         """
@@ -661,7 +661,7 @@ class VCA(object):
         **service type:**  vca
 
         """
-        instances = filter(lambda i: i['id'] == instance, self.instances)
+        instances = [i for i in self.instances if i['id'] == instance]
         if len(instances) > 0:
             if 'No Attributes' == instances[0]['instanceAttributes']:
                 return False
@@ -699,23 +699,21 @@ class VCA(object):
         Log.debug(
             self.logger, 'SSO to instance %s, org_url=%s' %
             (instance, org_url))
-        instances = filter(lambda i: i['id'] == instance, self.instances)
+        instances = [i for i in self.instances if i['id'] == instance]
         if len(instances) > 0:
             if 'instanceAttributes' not in instances[
                     0] or 'No Attributes' == instances[0]['instanceAttributes']:
                 return False
             attributes = json.loads(instances[0]['instanceAttributes'])
             plans = self.get_plans()
-            service_name = filter(lambda plan:
-                                  plan['id'] == instances[0]['planId'],
-                                  plans)[0]['serviceName']
+            service_name = [plan for plan in plans if plan['id'] == instances[0]['planId']][0]['serviceName']
             if 'com.vmware.vchs.compute' != service_name:
                 Log.debug(self.logger, 'cannot select instance of plan %s'
                           % service_name)
                 return False
             session_uri = attributes['sessionUri']
             org_name = attributes['orgName']
-            from urlparse import urlparse
+            from urllib.parse import urlparse
             parsed_uri = urlparse(session_uri)
             region_fqdn = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
             headers = self._get_vcloud_headers()
@@ -769,9 +767,7 @@ class VCA(object):
         **service type:**  vchs
 
         """
-        serviceReferences = filter(
-            lambda serviceReference: serviceReference.get_serviceId() == serviceId,
-            self.services.get_Service())
+        serviceReferences = [serviceReference for serviceReference in self.services.get_Service() if serviceReference.get_serviceId() == serviceId]
         if len(serviceReferences) == 0:
             return []
         self.response = Http.get(
@@ -793,9 +789,7 @@ class VCA(object):
         **service type:**  vchs
 
         """
-        vdcReferences = filter(
-            lambda vdcRef: vdcRef.get_name() == vdcId,
-            self.get_vdc_references(serviceId))
+        vdcReferences = [vdcRef for vdcRef in self.get_vdc_references(serviceId) if vdcRef.get_name() == vdcId]
         if len(vdcReferences) == 0:
             return None
         return vdcReferences[0]
@@ -817,9 +811,7 @@ class VCA(object):
         """
         vdcReference = self.get_vdc_reference(service, org_name)
         if vdcReference:
-            link = filter(
-                lambda link: link.get_type() == "application/xml;class=vnd.vmware.vchs.vcloudsession",
-                vdcReference.get_Link())[0]
+            link = [link for link in vdcReference.get_Link() if link.get_type() == "application/xml;class=vnd.vmware.vchs.vcloudsession"][0]
             self.response = Http.post(
                 link.get_href(),
                 headers=self._get_vcloud_headers(),
@@ -840,9 +832,7 @@ class VCA(object):
                 if self.response.status_code == requests.codes.ok:
                     self.vdc = vdcType.parseString(self.response.content, True)
                     self.org = self.vdc.name
-                    org_url = filter(
-                        lambda link: link.get_type() == "application/vnd.vmware.vcloud.org+xml",
-                        self.vdc.get_Link())[0].href
+                    org_url = [link for link in self.vdc.get_Link() if link.get_type() == "application/vnd.vmware.vcloud.org+xml"][0].href
                     vcloud_session = VCS(
                         org_url,
                         self.username,
@@ -891,9 +881,7 @@ class VCA(object):
 
         """
         if self.vcloud_session and self.vcloud_session.organization:
-            refs = filter(
-                lambda ref: ref.name == vdc_name and ref.type_ == 'application/vnd.vmware.vcloud.vdc+xml',
-                self.vcloud_session.organization.Link)
+            refs = [ref for ref in self.vcloud_session.organization.Link if ref.name == vdc_name and ref.type_ == 'application/vnd.vmware.vcloud.vdc+xml']
             if len(refs) == 1:
                 self.response = Http.get(
                     refs[0].href,
@@ -915,9 +903,7 @@ class VCA(object):
         """
         vdcs = []
         if self.vcloud_session and self.vcloud_session.organization:
-            refs = filter(
-                lambda ref: ref.type_ == 'application/vnd.vmware.vcloud.vdc+xml',
-                self.vcloud_session.organization.Link)
+            refs = [ref for ref in self.vcloud_session.organization.Link if ref.type_ == 'application/vnd.vmware.vcloud.vdc+xml']
             for ref in refs:
                 vdcs.append(ref.name)
         return vdcs
@@ -935,9 +921,7 @@ class VCA(object):
         **service type:** ondemand, subscription, vcd
 
         """
-        refs = filter(
-            lambda ref: ref.name == vapp_name and ref.type_ == 'application/vnd.vmware.vcloud.vApp+xml',
-            vdc.ResourceEntities.ResourceEntity)
+        refs = [ref for ref in vdc.ResourceEntities.ResourceEntity if ref.name == vapp_name and ref.type_ == 'application/vnd.vmware.vcloud.vApp+xml']
         if len(refs) == 1:
             self.response = Http.get(
                 refs[0].href,
@@ -1162,9 +1146,8 @@ class VCA(object):
 
     def get_template_href_from_catalog(self, catalog_name, template_name, target_vm=None):
 
-        catalogs = filter(lambda link: catalog_name == link.get_name() and link.get_type(
-        ) == "application/vnd.vmware.vcloud.catalog+xml",
-            self.vcloud_session.organization.get_Link())
+        catalogs = [link for link in self.vcloud_session.organization.get_Link() if catalog_name == link.get_name() and link.get_type(
+        ) == "application/vnd.vmware.vcloud.catalog+xml"]
         if len(catalogs) == 1:
             self.response = Http.get(
                 catalogs[0].get_href(),
@@ -1173,9 +1156,7 @@ class VCA(object):
                 logger=self.logger)
             if self.response.status_code == requests.codes.ok:
                 catalog = catalogType.parseString(self.response.content, True)
-                catalog_items = filter(
-                    lambda catalogItemRef: catalogItemRef.get_name() == template_name,
-                    catalog.get_CatalogItems().get_CatalogItem())
+                catalog_items = [catalogItemRef for catalogItemRef in catalog.get_CatalogItems().get_CatalogItem() if catalogItemRef.get_name() == template_name]
                 if len(catalog_items) == 1:
                     self.response = Http.get(
                         catalog_items[0].get_href(),
@@ -1207,9 +1188,7 @@ class VCA(object):
 
     def _get_vdc_templates(self):
         content_type = "application/vnd.vmware.admin.vdcTemplates+xml"
-        link = filter(
-            lambda link: link.get_type() == content_type,
-            self.vcloud_session.get_Link())
+        link = [link for link in self.vcloud_session.get_Link() if link.get_type() == content_type]
         if len(link) == 0:
             return []
         self.response = Http.get(
@@ -1228,15 +1207,11 @@ class VCA(object):
         content_type = "application/vnd.vmware.admin.vdcTemplate+xml"
         vdcTemplate = None
         if vdc_template_name is None:
-            vdcTemplate = filter(
-                lambda link: link.get_type() == content_type,
-                vdcTemplateList.get_VdcTemplate())[0]
+            vdcTemplate = [link for link in vdcTemplateList.get_VdcTemplate() if link.get_type() == content_type][0]
         else:
-            vdcTemplate = filter(
-                lambda link: (
+            vdcTemplate = [link for link in vdcTemplateList.get_VdcTemplate() if (
                     link.get_type() == content_type) and (
-                    link.get_name() == vdc_template_name),
-                vdcTemplateList.get_VdcTemplate())[0]
+                    link.get_name() == vdc_template_name)][0]
         source = vcloudType.ReferenceType(href=vdcTemplate.get_href())
 
         # Too simple to add InstantiateVdcTemplateParamsType class
@@ -1248,9 +1223,7 @@ class VCA(object):
             name="InstantiateVdcTemplateParams",
             namespacedef='xmlns="http://www.vmware.com/vcloud/v1.5"')
         content_type = "application/vnd.vmware.vcloud.instantiateVdcTemplateParams+xml"
-        link = filter(
-            lambda link: link.get_type() == content_type,
-            self.vcloud_session.get_Link())
+        link = [link for link in self.vcloud_session.get_Link() if link.get_type() == content_type]
         self.response = Http.post(
             link[0].get_href(),
             headers=self.vcloud_session.get_vcloud_headers(),
@@ -1355,8 +1328,8 @@ class VCA(object):
             .replace('ovf:NetworkConfigSection', 'NetworkConfigSection')\
             .replace('ovf:NetworkConnectionSection', 'NetworkConnectionSection')
         content_type = "application/vnd.vmware.vcloud.composeVAppParams+xml"
-        link = filter(lambda link: link.get_type() ==
-                      content_type, self.vdc.get_Link())
+        link = [link for link in self.vdc.get_Link() if link.get_type() ==
+                      content_type]
         self.response = Http.post(
             link[0].get_href(),
             headers=self.vcloud_session.get_vcloud_headers(),
@@ -1462,9 +1435,7 @@ class VCA(object):
         """
         source_vdc = self.get_vdc(source_vdc_name)
         self.vdc = self.get_vdc(dest_vdc_name)
-        refs = filter(
-            lambda ref: ref.name == source_vapp_name and ref.type_ == 'application/vnd.vmware.vcloud.vApp+xml',
-            source_vdc.ResourceEntities.ResourceEntity)
+        refs = [ref for ref in source_vdc.ResourceEntities.ResourceEntity if ref.name == source_vapp_name and ref.type_ == 'application/vnd.vmware.vcloud.vApp+xml']
         if len(refs) == 1:
             source_vapp_href = refs[0].href
         else:
@@ -1487,8 +1458,8 @@ class VCA(object):
             .replace('vmw:', 'rasd:')\
             .replace('Info>', "ovf:Info>")
         content_type = "application/vnd.vmware.vcloud.cloneVAppParams+xml"
-        link = filter(lambda link: link.get_type() ==
-                      content_type, self.vdc.get_Link())
+        link = [link for link in self.vdc.get_Link() if link.get_type() ==
+                      content_type]
         self.response = Http.post(
             link[0].get_href(),
             headers=self.vcloud_session.get_vcloud_headers(),
@@ -1634,9 +1605,7 @@ class VCA(object):
 
         """
         self.vcloud_session.login(token=self.vcloud_session.token)
-        links = filter(
-            lambda link: link.get_type() == "application/vnd.vmware.vcloud.catalog+xml",
-            self.vcloud_session.organization.Link)
+        links = [link for link in self.vcloud_session.organization.Link if link.get_type() == "application/vnd.vmware.vcloud.catalog+xml"]
         catalogs = []
         for link in links:
             self.response = Http.get(
@@ -1663,9 +1632,7 @@ class VCA(object):
         **service type:** ondemand, subscription, vcd
 
         """
-        refs = filter(
-            lambda ref: ref.rel == 'add' and ref.type_ == 'application/vnd.vmware.admin.catalog+xml',
-            self.vcloud_session.organization.Link)
+        refs = [ref for ref in self.vcloud_session.organization.Link if ref.rel == 'add' and ref.type_ == 'application/vnd.vmware.admin.catalog+xml']
         if len(refs) == 1:
             data = """<?xml version="1.0" encoding="UTF-8"?>
             <AdminCatalog xmlns="http://www.vmware.com/vcloud/v1.5" name="%s">
@@ -1698,15 +1665,11 @@ class VCA(object):
         if not self.vcloud_session or not self.vcloud_session.organization:
             return False
         if 'ondemand' == self.service_type:
-            refs = filter(
-                lambda ref: ref.type_ == 'application/vnd.vmware.admin.organization+xml',
-                self.vcloud_session.organization.Link)
+            refs = [ref for ref in self.vcloud_session.organization.Link if ref.type_ == 'application/vnd.vmware.admin.organization+xml']
             if len(refs) == 1:
                 admin_url = refs[0].href
         else:
-            refs = filter(
-                lambda ref: ref.type_ == 'application/vnd.vmware.admin.catalog+xml',
-                self.vcloud_session.organization.Link)
+            refs = [ref for ref in self.vcloud_session.organization.Link if ref.type_ == 'application/vnd.vmware.admin.catalog+xml']
             if len(refs) == 1:
                 admin_url = refs[0].href[:refs[0].href.rindex('/')]
         if admin_url:
@@ -1719,9 +1682,7 @@ class VCA(object):
                 adminOrg = vCloudEntities.parseString(
                     self.response.content, True)
                 if adminOrg and adminOrg.Catalogs and adminOrg.Catalogs.CatalogReference:
-                    catRefs = filter(
-                        lambda ref: ref.name == catalog_name and ref.type_ == 'application/vnd.vmware.admin.catalog+xml',
-                        adminOrg.Catalogs.CatalogReference)
+                    catRefs = [ref for ref in adminOrg.Catalogs.CatalogReference if ref.name == catalog_name and ref.type_ == 'application/vnd.vmware.admin.catalog+xml']
                     if len(catRefs) == 1:
                         self.response = Http.delete(
                             catRefs[0].href,
@@ -1758,8 +1719,8 @@ class VCA(object):
         for catalog in self.get_catalogs():
             if catalog_name != catalog.name:
                 continue
-            link = filter(lambda link: link.get_type(
-            ) == "application/vnd.vmware.vcloud.media+xml" and link.get_rel() == 'add', catalog.get_Link())
+            link = [link for link in catalog.get_Link() if link.get_type(
+            ) == "application/vnd.vmware.vcloud.media+xml" and link.get_rel() == 'add']
             assert len(link) == 1
             Log.debug(self.logger, link[0].get_href())
             data = """
@@ -1791,9 +1752,7 @@ class VCA(object):
                     logger=self.logger)
                 if self.response.status_code == requests.codes.ok:
                     media = mediaType.parseString(self.response.content, True)
-                    link = filter(
-                        lambda link: link.get_rel() == 'upload:default',
-                        media.get_Files().get_File()[0].get_Link())[0]
+                    link = [link for link in media.get_Files().get_File()[0].get_Link() if link.get_rel() == 'upload:default'][0]
                     progress_bar = None
                     if display_progress:
                         widgets = [
@@ -1882,8 +1841,8 @@ class VCA(object):
         vdc = self.get_vdc(vdc_name)
         if not vdc:
             return gateways
-        link = filter(lambda link: link.get_rel() ==
-                      "edgeGateways", vdc.get_Link())
+        link = [link for link in vdc.get_Link() if link.get_rel() ==
+                      "edgeGateways"]
         if not link:
             return gateways
         self.response = Http.get(
@@ -1928,8 +1887,8 @@ class VCA(object):
         vdc = self.get_vdc(vdc_name)
         if not vdc:
             return gateway
-        link = filter(lambda link: link.get_rel() ==
-                      "edgeGateways", vdc.get_Link())
+        link = [link for link in vdc.get_Link() if link.get_rel() ==
+                      "edgeGateways"]
         self.response = Http.get(
             link[0].get_href(),
             headers=self.vcloud_session.get_vcloud_headers(),
@@ -2077,9 +2036,7 @@ class VCA(object):
         **service type:** ondemand, subscription, vcd
 
         """
-        refs = filter(
-            lambda ref: ref.name == catalog_name and ref.type_ == 'application/vnd.vmware.vcloud.catalog+xml',
-            self.vcloud_session.organization.Link)
+        refs = [ref for ref in self.vcloud_session.organization.Link if ref.name == catalog_name and ref.type_ == 'application/vnd.vmware.vcloud.catalog+xml']
         if len(refs) == 1:
             self.response = Http.get(
                 refs[0].get_href(),
@@ -2088,9 +2045,7 @@ class VCA(object):
                 logger=self.logger)
             if self.response.status_code == requests.codes.ok:
                 catalog = catalogType.parseString(self.response.content, True)
-                catalog_items = filter(
-                    lambda catalogItemRef: catalogItemRef.get_name() == media_name,
-                    catalog.get_CatalogItems().get_CatalogItem())
+                catalog_items = [catalogItemRef for catalogItemRef in catalog.get_CatalogItems().get_CatalogItem() if catalogItemRef.get_name() == media_name]
                 if len(catalog_items) == 1:
                     self.response = Http.get(
                         catalog_items[0].get_href(),
@@ -2184,8 +2139,7 @@ class VCA(object):
         body = '<?xml version="1.0" encoding="UTF-8"?>{0}'.format(
             CommonUtils.convertPythonObjToStr(net, name='OrgVdcNetwork',
                                               namespacedef=namespacedef))
-        postlink = filter(lambda link: link.get_type() == content_type,
-                          vdc.get_Link())[0].href
+        postlink = [link for link in vdc.get_Link() if link.get_type() == content_type][0].href
         headers = self.vcloud_session.get_vcloud_headers()
         headers["Content-Type"] = content_type
         self.response = Http.post(
@@ -2230,8 +2184,7 @@ class VCA(object):
 
     def get_admin_network_href(self, vdc_name, network_name):
         vdc = self.get_vdc(vdc_name)
-        link = filter(lambda link: link.get_rel() == "orgVdcNetworks",
-                      vdc.get_Link())
+        link = [link for link in vdc.get_Link() if link.get_rel() == "orgVdcNetworks"]
         self.response = Http.get(
             link[0].get_href(),
             headers=self.vcloud_session.get_vcloud_headers(),
@@ -2359,7 +2312,7 @@ class VCA(object):
 
         if storage_profile_name != None:
             content_type = "application/vnd.vmware.vcloud.vdcStorageProfile+xml"
-            storage_profile = filter(lambda storage_profile: storage_profile.get_name() == storage_profile_name, vdc.get_VdcStorageProfiles().get_VdcStorageProfile())
+            storage_profile = [storage_profile for storage_profile in vdc.get_VdcStorageProfiles().get_VdcStorageProfile() if storage_profile.get_name() == storage_profile_name]
 
             if len(storage_profile) != 1:
                 return(False, self.response.content)
@@ -2373,8 +2326,8 @@ class VCA(object):
         data = CommonUtils.convertPythonObjToStr(disk, name="DiskCreateParams", namespacedef='xmlns="http://www.vmware.com/vcloud/v1.5"')
 
         content_type = "application/vnd.vmware.vcloud.diskCreateParams+xml"
-        link = filter(lambda link: link.get_type() ==
-                      content_type, vdc.get_Link())
+        link = [link for link in vdc.get_Link() if link.get_type() ==
+                      content_type]
         self.response = Http.post(
             link[0].get_href(),
             data=data,
@@ -2405,11 +2358,10 @@ class VCA(object):
         refs = self.get_diskRefs(vdc)
         link = []
         if id is not None:
-            link = filter(
-                lambda link: link.get_href().endswith(
-                    '/' + id), refs)
+            link = [link for link in refs if link.get_href().endswith(
+                    '/' + id)]
         elif name is not None:
-            link = filter(lambda link: link.get_name() == name, refs)
+            link = [link for link in refs if link.get_name() == name]
         if len(link) == 1:
             self.response = Http.delete(
                 link[0].get_href(),

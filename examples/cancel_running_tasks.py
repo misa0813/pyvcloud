@@ -8,16 +8,16 @@ from pyvcloud.helper.CommonUtils import convertPythonObjToStr
 
 def print_vca(vca):
     if vca:
-        print 'vca token:            ', vca.token
+        print('vca token:            ', vca.token)
         if vca.vcloud_session:
-            print 'vcloud session token: ', vca.vcloud_session.token
-            print 'org name:             ', vca.vcloud_session.org
-            print 'org url:              ', vca.vcloud_session.org_url
-            print 'organization:         ', vca.vcloud_session.organization
+            print('vcloud session token: ', vca.vcloud_session.token)
+            print('org name:             ', vca.vcloud_session.org)
+            print('org url:              ', vca.vcloud_session.org_url)
+            print('organization:         ', vca.vcloud_session.organization)
         else:
-            print 'vca vcloud session:   ', vca.vcloud_session
+            print('vca vcloud session:   ', vca.vcloud_session)
     else:
-        print 'vca: ', vca
+        print('vca: ', vca)
 
 host = 'vcd.cpsbu.eng.vmware.com'
 if len(sys.argv)>0:
@@ -45,7 +45,7 @@ vca_tenant = VCA(host=host, username=tenant_username, service_type='standalone',
 result = vca_tenant.login(password=password, org=tenant_org, org_url=tenant_org_url)
 user_id   = vca_tenant.vcloud_session.session.get_userId().split(':')[-1]
 user_name = vca_tenant.vcloud_session.username
-print(user_id, user_name)
+print((user_id, user_name))
 result = vca_tenant.login(token=vca_tenant.token, org=tenant_org, org_url=vca_tenant.vcloud_session.org_url)
 print(result)
 
@@ -53,7 +53,7 @@ task_ids = []
 task = Task(session=vca_tenant.vcloud_session, verify=verify, log=log)
 tasks = task.get_tasks('running')
 for t in tasks.get_Task():
-    print('%s, %s, %s, %s, %s, %s->%s' % (t.get_id().split(':')[-1], t.get_operation(), t.get_Owner().get_name(), t.get_status(), t.get_Progress(), str(t.get_startTime()).split('.')[0], str(t.get_endTime()).split('.')[0]))
+    print(('%s, %s, %s, %s, %s, %s->%s' % (t.get_id().split(':')[-1], t.get_operation(), t.get_Owner().get_name(), t.get_status(), t.get_Progress(), str(t.get_startTime()).split('.')[0], str(t.get_endTime()).split('.')[0])))
     task_ids.append(t.get_id().split(':')[-1])
 
 # task_ids = []
@@ -65,7 +65,7 @@ task = Task(session=vca_system.vcloud_session, verify=verify, log=log)
 for task_id in task_ids:
     t = task.get_task(task_id)
     if t is None:
-        print('task %s not found' % task_id)
+        print(('task %s not found' % task_id))
     else:
         namespace = t.get_serviceNamespace()
         operation_name = t.get_operationName()
@@ -73,7 +73,7 @@ for task_id in task_ids:
         org_id   = vca_tenant.vcloud_session.organization.get_id().split(':')[-1]
         org_name = vca_tenant.vcloud_session.organization.get_name()
 
-        print('%s, %s, %s, %s, %s, %s->%s' % (t.get_id().split(':')[-1], t.get_operation(), t.get_Owner().get_name(), t.get_status(), t.get_Progress(), str(t.get_startTime()).split('.')[0], str(t.get_endTime()).split('.')[0]))
+        print(('%s, %s, %s, %s, %s, %s->%s' % (t.get_id().split(':')[-1], t.get_operation(), t.get_Owner().get_name(), t.get_status(), t.get_Progress(), str(t.get_startTime()).split('.')[0], str(t.get_endTime()).split('.')[0])))
         if t.get_status() == 'running':
             #t = task.create_or_update_task(status, namespace, operation_name, operation_description, owner_href, owner_name, owner_type, user_id, user_name, progress, task_id=task_id)
             t = task.create_or_update_task('aborted',

@@ -32,7 +32,7 @@ Verbose_import_ = False
 (
     XMLParser_import_none, XMLParser_import_lxml,
     XMLParser_import_elementtree
-) = range(3)
+) = list(range(3))
 XMLParser_import_library = None
 try:
     # lxml
@@ -389,7 +389,7 @@ except ImportError as exp:
             return None
         @classmethod
         def gds_reverse_node_mapping(cls, mapping):
-            return dict(((v, k) for k, v in mapping.iteritems()))
+            return dict(((v, k) for k, v in mapping.items()))
 
 
 #
@@ -430,7 +430,7 @@ def showIndent(outfile, level, pretty_print=True):
 def quote_xml(inStr):
     if not inStr:
         return ''
-    s1 = (isinstance(inStr, basestring) and inStr or
+    s1 = (isinstance(inStr, str) and inStr or
           '%s' % inStr)
     s1 = s1.replace('&', '&amp;')
     s1 = s1.replace('<', '&lt;')
@@ -439,7 +439,7 @@ def quote_xml(inStr):
 
 
 def quote_attrib(inStr):
-    s1 = (isinstance(inStr, basestring) and inStr or
+    s1 = (isinstance(inStr, str) and inStr or
           '%s' % inStr)
     s1 = s1.replace('&', '&amp;')
     s1 = s1.replace('<', '&lt;')
@@ -1580,7 +1580,7 @@ class VCloudExtensionType(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='VCloudExtensionType'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -1631,7 +1631,7 @@ class VCloudExtensionType(GeneratedsSuper):
             already_processed.add('required')
             showIndent(outfile, level)
             outfile.write('required=%s,\n' % (self.required,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -1661,7 +1661,7 @@ class VCloudExtensionType(GeneratedsSuper):
             else:
                 raise_parse_error(node, 'Bad boolean attribute')
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -1726,7 +1726,7 @@ class VCloudExtensibleType(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='VCloudExtensibleType'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -1775,7 +1775,7 @@ class VCloudExtensibleType(GeneratedsSuper):
         if self.hasContent_():
             self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -1800,7 +1800,7 @@ class VCloudExtensibleType(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         value = find_attr_value_('xsi:type', node)
@@ -4098,7 +4098,7 @@ class MetadataDateTimeValue(MetadataTypedValue):
     def __init__(self, Value=None):
         self.original_tagname_ = None
         super(MetadataDateTimeValue, self).__init__()
-        if isinstance(Value, basestring):
+        if isinstance(Value, str):
             initvalue_ = datetime_.datetime.strptime(Value, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = Value
@@ -15685,7 +15685,7 @@ class EnvelopeType(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='EnvelopeType'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -15742,7 +15742,7 @@ class EnvelopeType(GeneratedsSuper):
             already_processed.add('lang')
             showIndent(outfile, level)
             outfile.write('lang="%s",\n' % (self.lang,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -15795,7 +15795,7 @@ class EnvelopeType(GeneratedsSuper):
             already_processed.add('lang')
             self.lang = value
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -16009,7 +16009,7 @@ class References_Type(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='References_Type'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -16056,7 +16056,7 @@ class References_Type(GeneratedsSuper):
         if self.hasContent_():
             self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -16089,7 +16089,7 @@ class References_Type(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -16174,7 +16174,7 @@ class File_Type(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='File_Type'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -16253,7 +16253,7 @@ class File_Type(GeneratedsSuper):
             already_processed.add('size')
             showIndent(outfile, level)
             outfile.write('size=%d,\n' % (self.size,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -16300,7 +16300,7 @@ class File_Type(GeneratedsSuper):
             except ValueError as exp:
                 raise_parse_error(node, 'Bad integer attribute: %s' % exp)
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -16375,7 +16375,7 @@ class Content_Type(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Content_Type'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -16434,7 +16434,7 @@ class Content_Type(GeneratedsSuper):
             already_processed.add('id')
             showIndent(outfile, level)
             outfile.write('id="%s",\n' % (self.id,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -16475,7 +16475,7 @@ class Content_Type(GeneratedsSuper):
             already_processed.add('id')
             self.id = value
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         value = find_attr_value_('xsi:type', node)
@@ -16852,7 +16852,7 @@ class Strings_Type(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Strings_Type'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -16910,7 +16910,7 @@ class Strings_Type(GeneratedsSuper):
             already_processed.add('fileRef')
             showIndent(outfile, level)
             outfile.write('fileRef="%s",\n' % (self.fileRef,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -16943,7 +16943,7 @@ class Strings_Type(GeneratedsSuper):
             already_processed.add('fileRef')
             self.fileRef = value
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -17004,7 +17004,7 @@ class Section_Type(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Section_Type'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -17055,7 +17055,7 @@ class Section_Type(GeneratedsSuper):
             already_processed.add('required')
             showIndent(outfile, level)
             outfile.write('required=%s,\n' % (self.required,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -17083,7 +17083,7 @@ class Section_Type(GeneratedsSuper):
             else:
                 raise_parse_error(node, 'Bad boolean attribute')
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -17144,7 +17144,7 @@ class Msg_Type(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Msg_Type'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -17192,7 +17192,7 @@ class Msg_Type(GeneratedsSuper):
             already_processed.add('msgid')
             showIndent(outfile, level)
             outfile.write('msgid="%s",\n' % (self.msgid,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -17211,7 +17211,7 @@ class Msg_Type(GeneratedsSuper):
             already_processed.add('msgid')
             self.msgid = value
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -17722,7 +17722,7 @@ class PropertyConfigurationValue_Type(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='PropertyConfigurationValue_Type'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -17780,7 +17780,7 @@ class PropertyConfigurationValue_Type(GeneratedsSuper):
             already_processed.add('value')
             showIndent(outfile, level)
             outfile.write('value="%s",\n' % (self.value,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -17809,7 +17809,7 @@ class PropertyConfigurationValue_Type(GeneratedsSuper):
             already_processed.add('value')
             self.value = value
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -18143,7 +18143,7 @@ class VirtualDiskDesc_Type(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='VirtualDiskDesc_Type'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -18236,7 +18236,7 @@ class VirtualDiskDesc_Type(GeneratedsSuper):
             already_processed.add('diskId')
             showIndent(outfile, level)
             outfile.write('diskId="%s",\n' % (self.diskId,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -18288,7 +18288,7 @@ class VirtualDiskDesc_Type(GeneratedsSuper):
             already_processed.add('diskId')
             self.diskId = value
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -19206,17 +19206,17 @@ class cimDateTime(GeneratedsSuper):
         self.original_tagname_ = None
         self.CIM_DateTime = CIM_DateTime
         self.Interval = Interval
-        if isinstance(Date, basestring):
+        if isinstance(Date, str):
             initvalue_ = datetime_.datetime.strptime(Date, '%Y-%m-%d').date()
         else:
             initvalue_ = Date
         self.Date = initvalue_
-        if isinstance(Time, basestring):
+        if isinstance(Time, str):
             initvalue_ = datetime_.datetime.strptime(Time, '%H:%M:%S').time()
         else:
             initvalue_ = Time
         self.Time = initvalue_
-        if isinstance(Datetime, basestring):
+        if isinstance(Datetime, str):
             initvalue_ = datetime_.datetime.strptime(Datetime, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = Datetime
@@ -19271,7 +19271,7 @@ class cimDateTime(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='cimDateTime'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -19329,7 +19329,7 @@ class cimDateTime(GeneratedsSuper):
         if self.hasContent_():
             self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -19357,7 +19357,7 @@ class cimDateTime(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -19428,7 +19428,7 @@ class cimUnsignedByte(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='cimUnsignedByte'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -19470,7 +19470,7 @@ class cimUnsignedByte(GeneratedsSuper):
         showIndent(outfile, level)
         outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -19485,7 +19485,7 @@ class cimUnsignedByte(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -19537,7 +19537,7 @@ class cimByte(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='cimByte'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -19579,7 +19579,7 @@ class cimByte(GeneratedsSuper):
         showIndent(outfile, level)
         outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -19594,7 +19594,7 @@ class cimByte(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -19646,7 +19646,7 @@ class cimUnsignedShort(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='cimUnsignedShort'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -19688,7 +19688,7 @@ class cimUnsignedShort(GeneratedsSuper):
         showIndent(outfile, level)
         outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -19703,7 +19703,7 @@ class cimUnsignedShort(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -19755,7 +19755,7 @@ class cimShort(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='cimShort'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -19797,7 +19797,7 @@ class cimShort(GeneratedsSuper):
         showIndent(outfile, level)
         outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -19812,7 +19812,7 @@ class cimShort(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -19867,7 +19867,7 @@ class cimUnsignedInt(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='cimUnsignedInt'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -19913,7 +19913,7 @@ class cimUnsignedInt(GeneratedsSuper):
         showIndent(outfile, level)
         outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -19928,7 +19928,7 @@ class cimUnsignedInt(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         value = find_attr_value_('xsi:type', node)
@@ -19984,7 +19984,7 @@ class cimInt(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='cimInt'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -20026,7 +20026,7 @@ class cimInt(GeneratedsSuper):
         showIndent(outfile, level)
         outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -20041,7 +20041,7 @@ class cimInt(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -20093,7 +20093,7 @@ class cimUnsignedLong(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='cimUnsignedLong'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -20135,7 +20135,7 @@ class cimUnsignedLong(GeneratedsSuper):
         showIndent(outfile, level)
         outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -20150,7 +20150,7 @@ class cimUnsignedLong(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -20205,7 +20205,7 @@ class cimLong(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='cimLong'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -20251,7 +20251,7 @@ class cimLong(GeneratedsSuper):
         showIndent(outfile, level)
         outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -20266,7 +20266,7 @@ class cimLong(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         value = find_attr_value_('xsi:type', node)
@@ -20325,7 +20325,7 @@ class cimString(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='cimString'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -20371,7 +20371,7 @@ class cimString(GeneratedsSuper):
         showIndent(outfile, level)
         outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -20386,7 +20386,7 @@ class cimString(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         value = find_attr_value_('xsi:type', node)
@@ -20445,7 +20445,7 @@ class cimBoolean(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='cimBoolean'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -20491,7 +20491,7 @@ class cimBoolean(GeneratedsSuper):
         showIndent(outfile, level)
         outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -20506,7 +20506,7 @@ class cimBoolean(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         value = find_attr_value_('xsi:type', node)
@@ -20562,7 +20562,7 @@ class cimFloat(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='cimFloat'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -20604,7 +20604,7 @@ class cimFloat(GeneratedsSuper):
         showIndent(outfile, level)
         outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -20619,7 +20619,7 @@ class cimFloat(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -20671,7 +20671,7 @@ class cimDouble(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='cimDouble'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -20713,7 +20713,7 @@ class cimDouble(GeneratedsSuper):
         showIndent(outfile, level)
         outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -20728,7 +20728,7 @@ class cimDouble(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -20782,7 +20782,7 @@ class cimChar16(cimString):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='cimChar16'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -20825,7 +20825,7 @@ class cimChar16(cimString):
         showIndent(outfile, level)
         outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
         super(cimChar16, self).exportLiteralAttributes(outfile, level, already_processed, name_)
@@ -20842,7 +20842,7 @@ class cimChar16(cimString):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         super(cimChar16, self).buildAttributes(node, attrs, already_processed)
@@ -20895,7 +20895,7 @@ class cimBase64Binary(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='cimBase64Binary'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -20937,7 +20937,7 @@ class cimBase64Binary(GeneratedsSuper):
         showIndent(outfile, level)
         outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -20952,7 +20952,7 @@ class cimBase64Binary(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -21009,7 +21009,7 @@ class cimReference(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='cimReference'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -21054,7 +21054,7 @@ class cimReference(GeneratedsSuper):
         if self.hasContent_():
             self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -21075,7 +21075,7 @@ class cimReference(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -21129,7 +21129,7 @@ class cimHexBinary(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='cimHexBinary'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -21171,7 +21171,7 @@ class cimHexBinary(GeneratedsSuper):
         showIndent(outfile, level)
         outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -21186,7 +21186,7 @@ class cimHexBinary(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -21241,7 +21241,7 @@ class cimAnySimpleType(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='cimAnySimpleType'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -21287,7 +21287,7 @@ class cimAnySimpleType(GeneratedsSuper):
         showIndent(outfile, level)
         outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -21302,7 +21302,7 @@ class cimAnySimpleType(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         value = find_attr_value_('xsi:type', node)
@@ -21810,7 +21810,7 @@ class AutomaticStartupAction(cimAnySimpleType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='AutomaticStartupAction'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -21853,7 +21853,7 @@ class AutomaticStartupAction(cimAnySimpleType):
         showIndent(outfile, level)
         outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
         super(AutomaticStartupAction, self).exportLiteralAttributes(outfile, level, already_processed, name_)
@@ -21870,7 +21870,7 @@ class AutomaticStartupAction(cimAnySimpleType):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         super(AutomaticStartupAction, self).buildAttributes(node, attrs, already_processed)
@@ -21925,7 +21925,7 @@ class AutomaticShutdownAction(cimAnySimpleType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='AutomaticShutdownAction'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -21968,7 +21968,7 @@ class AutomaticShutdownAction(cimAnySimpleType):
         showIndent(outfile, level)
         outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
         super(AutomaticShutdownAction, self).exportLiteralAttributes(outfile, level, already_processed, name_)
@@ -21985,7 +21985,7 @@ class AutomaticShutdownAction(cimAnySimpleType):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         super(AutomaticShutdownAction, self).buildAttributes(node, attrs, already_processed)
@@ -22040,7 +22040,7 @@ class AutomaticRecoveryAction(cimAnySimpleType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='AutomaticRecoveryAction'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -22083,7 +22083,7 @@ class AutomaticRecoveryAction(cimAnySimpleType):
         showIndent(outfile, level)
         outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
         super(AutomaticRecoveryAction, self).exportLiteralAttributes(outfile, level, already_processed, name_)
@@ -22100,7 +22100,7 @@ class AutomaticRecoveryAction(cimAnySimpleType):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         super(AutomaticRecoveryAction, self).buildAttributes(node, attrs, already_processed)
@@ -22155,7 +22155,7 @@ class Caption(cimString):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Caption'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -22198,7 +22198,7 @@ class Caption(cimString):
         showIndent(outfile, level)
         outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
         super(Caption, self).exportLiteralAttributes(outfile, level, already_processed, name_)
@@ -22215,7 +22215,7 @@ class Caption(cimString):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         super(Caption, self).buildAttributes(node, attrs, already_processed)
@@ -22378,7 +22378,7 @@ class CIM_VirtualSystemSettingData_Type(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='CIM_VirtualSystemSettingData_Type'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -22472,7 +22472,7 @@ class CIM_VirtualSystemSettingData_Type(GeneratedsSuper):
         if self.hasContent_():
             self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -22616,7 +22616,7 @@ class CIM_VirtualSystemSettingData_Type(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         value = find_attr_value_('xsi:type', node)
@@ -22808,7 +22808,7 @@ class ConsumerVisibility(cimAnySimpleType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='ConsumerVisibility'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -22851,7 +22851,7 @@ class ConsumerVisibility(cimAnySimpleType):
         showIndent(outfile, level)
         outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
         super(ConsumerVisibility, self).exportLiteralAttributes(outfile, level, already_processed, name_)
@@ -22868,7 +22868,7 @@ class ConsumerVisibility(cimAnySimpleType):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         super(ConsumerVisibility, self).buildAttributes(node, attrs, already_processed)
@@ -22923,7 +22923,7 @@ class MappingBehavior(cimAnySimpleType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='MappingBehavior'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -22966,7 +22966,7 @@ class MappingBehavior(cimAnySimpleType):
         showIndent(outfile, level)
         outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
         super(MappingBehavior, self).exportLiteralAttributes(outfile, level, already_processed, name_)
@@ -22983,7 +22983,7 @@ class MappingBehavior(cimAnySimpleType):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         super(MappingBehavior, self).buildAttributes(node, attrs, already_processed)
@@ -23160,7 +23160,7 @@ class CIM_ResourceAllocationSettingData_Type(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='CIM_ResourceAllocationSettingData_Type'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -23258,7 +23258,7 @@ class CIM_ResourceAllocationSettingData_Type(GeneratedsSuper):
         if self.hasContent_():
             self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -23420,7 +23420,7 @@ class CIM_ResourceAllocationSettingData_Type(GeneratedsSuper):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         value = find_attr_value_('xsi:type', node)
@@ -23652,7 +23652,7 @@ class Environment_Type(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Environment_Type'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -23707,7 +23707,7 @@ class Environment_Type(GeneratedsSuper):
             already_processed.add('id')
             showIndent(outfile, level)
             outfile.write('id="%s",\n' % (self.id,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -23756,7 +23756,7 @@ class Environment_Type(GeneratedsSuper):
             already_processed.add('id')
             self.id = value
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -23956,7 +23956,7 @@ class Entity_Type(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Entity_Type'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -24009,7 +24009,7 @@ class Entity_Type(GeneratedsSuper):
             already_processed.add('id')
             showIndent(outfile, level)
             outfile.write('id="%s",\n' % (self.id,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -24046,7 +24046,7 @@ class Entity_Type(GeneratedsSuper):
             already_processed.add('id')
             self.id = value
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -24534,7 +24534,7 @@ class IpAssignmentSection_Type(Section_Type):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='IpAssignmentSection_Type'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -24589,7 +24589,7 @@ class IpAssignmentSection_Type(Section_Type):
             already_processed.add('protocols')
             showIndent(outfile, level)
             outfile.write('protocols="%s",\n' % (self.protocols,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
         super(IpAssignmentSection_Type, self).exportLiteralAttributes(outfile, level, already_processed, name_)
@@ -24613,7 +24613,7 @@ class IpAssignmentSection_Type(Section_Type):
             already_processed.add('protocols')
             self.protocols = value
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         super(IpAssignmentSection_Type, self).buildAttributes(node, attrs, already_processed)
@@ -24676,7 +24676,7 @@ class CpuCompatibilitySection_Type(Section_Type):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='CpuCompatibilitySection_Type'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -24722,7 +24722,7 @@ class CpuCompatibilitySection_Type(Section_Type):
         if self.hasContent_():
             self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
         super(CpuCompatibilitySection_Type, self).exportLiteralAttributes(outfile, level, already_processed, name_)
@@ -24749,7 +24749,7 @@ class CpuCompatibilitySection_Type(Section_Type):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         super(CpuCompatibilitySection_Type, self).buildAttributes(node, attrs, already_processed)
@@ -24813,7 +24813,7 @@ class BootOrderSection_Type(Section_Type):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='BootOrderSection_Type'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -24868,7 +24868,7 @@ class BootOrderSection_Type(Section_Type):
             already_processed.add('type_')
             showIndent(outfile, level)
             outfile.write('type_="%s",\n' % (self.type_,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
         super(BootOrderSection_Type, self).exportLiteralAttributes(outfile, level, already_processed, name_)
@@ -24895,7 +24895,7 @@ class BootOrderSection_Type(Section_Type):
             already_processed.add('type')
             self.type_ = value
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         super(BootOrderSection_Type, self).buildAttributes(node, attrs, already_processed)
@@ -25210,7 +25210,7 @@ class CoresPerSocket_Type(cimUnsignedInt):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='CoresPerSocket_Type'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -25260,7 +25260,7 @@ class CoresPerSocket_Type(cimUnsignedInt):
             already_processed.add('required')
             showIndent(outfile, level)
             outfile.write('required=%s,\n' % (self.required,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
         super(CoresPerSocket_Type, self).exportLiteralAttributes(outfile, level, already_processed, name_)
@@ -25286,7 +25286,7 @@ class CoresPerSocket_Type(cimUnsignedInt):
             else:
                 raise_parse_error(node, 'Bad boolean attribute')
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         super(CoresPerSocket_Type, self).buildAttributes(node, attrs, already_processed)
@@ -26054,7 +26054,7 @@ class MsgType(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='MsgType'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -26102,7 +26102,7 @@ class MsgType(GeneratedsSuper):
             already_processed.add('msgid')
             showIndent(outfile, level)
             outfile.write('msgid="%s",\n' % (self.msgid,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -26121,7 +26121,7 @@ class MsgType(GeneratedsSuper):
             already_processed.add('msgid')
             self.msgid = value
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -26181,7 +26181,7 @@ class IconType(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='IconType'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -26248,7 +26248,7 @@ class IconType(GeneratedsSuper):
             already_processed.add('height')
             showIndent(outfile, level)
             outfile.write('height=%d,\n' % (self.height,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -26284,7 +26284,7 @@ class IconType(GeneratedsSuper):
             except ValueError as exp:
                 raise_parse_error(node, 'Bad integer attribute: %s' % exp)
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -26372,7 +26372,7 @@ class PropertyType(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='PropertyType'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -26462,7 +26462,7 @@ class PropertyType(GeneratedsSuper):
             already_processed.add('qualifiers')
             showIndent(outfile, level)
             outfile.write('qualifiers="%s",\n' % (self.qualifiers,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -26533,7 +26533,7 @@ class PropertyType(GeneratedsSuper):
             already_processed.add('qualifiers')
             self.qualifiers = value
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -26602,7 +26602,7 @@ class NetworkType4(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='NetworkType4'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -26653,7 +26653,7 @@ class NetworkType4(GeneratedsSuper):
             already_processed.add('name')
             showIndent(outfile, level)
             outfile.write('name="%s",\n' % (self.name,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -26676,7 +26676,7 @@ class NetworkType4(GeneratedsSuper):
             already_processed.add('name')
             self.name = value
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -26758,7 +26758,7 @@ class ItemType(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='ItemType'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -26846,7 +26846,7 @@ class ItemType(GeneratedsSuper):
             already_processed.add('id')
             showIndent(outfile, level)
             outfile.write('id="%s",\n' % (self.id,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -26902,7 +26902,7 @@ class ItemType(GeneratedsSuper):
             already_processed.add('id')
             self.id = value
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -26964,7 +26964,7 @@ class ConfigurationType(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='ConfigurationType'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -27024,7 +27024,7 @@ class ConfigurationType(GeneratedsSuper):
             already_processed.add('id')
             showIndent(outfile, level)
             outfile.write('id="%s",\n' % (self.id,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -27062,7 +27062,7 @@ class ConfigurationType(GeneratedsSuper):
             already_processed.add('id')
             self.id = value
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -27125,7 +27125,7 @@ class PropertyType5(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='PropertyType5'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -27178,7 +27178,7 @@ class PropertyType5(GeneratedsSuper):
             already_processed.add('key')
             showIndent(outfile, level)
             outfile.write('key="%s",\n' % (self.key,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -27200,7 +27200,7 @@ class PropertyType5(GeneratedsSuper):
             already_processed.add('key')
             self.key = value
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -27266,7 +27266,7 @@ class LevelType(GeneratedsSuper):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='LevelType'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -27347,7 +27347,7 @@ class LevelType(GeneratedsSuper):
             already_processed.add('ecx')
             showIndent(outfile, level)
             outfile.write('ecx="%s",\n' % (self.ecx,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
     def exportLiteralChildren(self, outfile, level, name_):
@@ -27385,7 +27385,7 @@ class LevelType(GeneratedsSuper):
             already_processed.add('ecx')
             self.ecx = value
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -27448,7 +27448,7 @@ class RASD_Type(CIM_ResourceAllocationSettingData_Type):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='RASD_Type'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -27509,7 +27509,7 @@ class RASD_Type(CIM_ResourceAllocationSettingData_Type):
             already_processed.add('configuration')
             showIndent(outfile, level)
             outfile.write('configuration="%s",\n' % (self.configuration,))
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
         super(RASD_Type, self).exportLiteralAttributes(outfile, level, already_processed, name_)
@@ -27541,7 +27541,7 @@ class RASD_Type(CIM_ResourceAllocationSettingData_Type):
             already_processed.add('configuration')
             self.configuration = value
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         super(RASD_Type, self).buildAttributes(node, attrs, already_processed)
@@ -27594,7 +27594,7 @@ class VSSD_Type(CIM_VirtualSystemSettingData_Type):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='VSSD_Type'):
         unique_counter = 0
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             xsinamespaceprefix = 'xsi'
             xsinamespace1 = 'http://www.w3.org/2001/XMLSchema-instance'
             xsinamespace2 = '{%s}' % (xsinamespace1, )
@@ -27634,7 +27634,7 @@ class VSSD_Type(CIM_VirtualSystemSettingData_Type):
         if self.hasContent_():
             self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        for name, value in self.anyAttributes_.items():
+        for name, value in list(self.anyAttributes_.items()):
             showIndent(outfile, level)
             outfile.write('%s="%s",\n' % (name, value,))
         super(VSSD_Type, self).exportLiteralAttributes(outfile, level, already_processed, name_)
@@ -27649,7 +27649,7 @@ class VSSD_Type(CIM_VirtualSystemSettingData_Type):
         return self
     def buildAttributes(self, node, attrs, already_processed):
         self.anyAttributes_ = {}
-        for name, value in attrs.items():
+        for name, value in list(attrs.items()):
             if name not in already_processed:
                 self.anyAttributes_[name] = value
         super(VSSD_Type, self).buildAttributes(node, attrs, already_processed)
@@ -27690,19 +27690,19 @@ class TaskType(EntityType):
         super(TaskType, self).__init__(operationKey, id, name, Description, Tasks, )
         self.status = _cast(None, status)
         self.operationName = _cast(None, operationName)
-        if isinstance(expiryTime, basestring):
+        if isinstance(expiryTime, str):
             initvalue_ = datetime_.datetime.strptime(expiryTime, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = expiryTime
         self.expiryTime = initvalue_
         self.cancelRequested = _cast(bool, cancelRequested)
-        if isinstance(startTime, basestring):
+        if isinstance(startTime, str):
             initvalue_ = datetime_.datetime.strptime(startTime, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = startTime
         self.startTime = initvalue_
         self.operation = _cast(None, operation)
-        if isinstance(endTime, basestring):
+        if isinstance(endTime, str):
             initvalue_ = datetime_.datetime.strptime(endTime, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = endTime
@@ -28215,7 +28215,7 @@ class ComplianceResultType(VCloudExtensibleType):
         super(ComplianceResultType, self).__init__(VCloudExtension, )
         self.ComplianceStatus = ComplianceStatus
         self.ComplianceStatusMessage = ComplianceStatusMessage
-        if isinstance(ComplianceCheckTime, basestring):
+        if isinstance(ComplianceCheckTime, str):
             initvalue_ = datetime_.datetime.strptime(ComplianceCheckTime, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = ComplianceCheckTime
@@ -30603,7 +30603,7 @@ class SnapshotType(VCloudExtensibleType):
         super(SnapshotType, self).__init__(VCloudExtension, )
         self.poweredOn = _cast(bool, poweredOn)
         self.size = _cast(int, size)
-        if isinstance(created, basestring):
+        if isinstance(created, str):
             initvalue_ = datetime_.datetime.strptime(created, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = created
@@ -31693,12 +31693,12 @@ class LeaseSettingsSectionType(Section_Type):
             self.Link = Link
         self.DeploymentLeaseInSeconds = DeploymentLeaseInSeconds
         self.StorageLeaseInSeconds = StorageLeaseInSeconds
-        if isinstance(DeploymentLeaseExpiration, basestring):
+        if isinstance(DeploymentLeaseExpiration, str):
             initvalue_ = datetime_.datetime.strptime(DeploymentLeaseExpiration, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = DeploymentLeaseExpiration
         self.DeploymentLeaseExpiration = initvalue_
-        if isinstance(StorageLeaseExpiration, basestring):
+        if isinstance(StorageLeaseExpiration, str):
             initvalue_ = datetime_.datetime.strptime(StorageLeaseExpiration, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = StorageLeaseExpiration
@@ -32786,7 +32786,7 @@ class AbstractVAppType(ResourceEntityType):
             self.Section = []
         else:
             self.Section = Section
-        if isinstance(DateCreated, basestring):
+        if isinstance(DateCreated, str):
             initvalue_ = datetime_.datetime.strptime(DateCreated, '%Y-%m-%dT%H:%M:%S')
         else:
             initvalue_ = DateCreated
@@ -35168,7 +35168,7 @@ Usage: python <Parser>.py [ -s ] <in_xml_file>
 
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(1)
 
 
@@ -35224,7 +35224,7 @@ def parseEtree(inFileName, silence=False):
 
 
 def parseString(inString, silence=False):
-    from StringIO import StringIO
+    from io import StringIO
     doc = parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)

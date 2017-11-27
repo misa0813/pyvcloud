@@ -45,8 +45,8 @@ progress       = int(sys.argv[3])
 status         = sys.argv[2]
 task_id        = sys.argv[1]
 
-print(status, namespace, operation_name, operation_description, owner_href, owner_name, owner_type, user_id, user_name, progress, task_id)
+print((status, namespace, operation_name, operation_description, owner_href, owner_name, owner_type, user_id, user_name, progress, task_id))
 
 task = Task(session=vca_system.vcloud_session, verify=verify, log=log)
 t = task.create_or_update_task(status, namespace, operation_name, operation_description, owner_href, owner_name, owner_type, user_id, user_name, progress, task_id=task_id)
-print(t.get_id().split(':')[-1])
+print((t.get_id().split(':')[-1]))

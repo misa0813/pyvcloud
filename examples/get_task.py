@@ -32,6 +32,6 @@ task_id = sys.argv[1]
 task = Task(session=vca_tenant.vcloud_session, verify=verify, log=log)
 t = task.get_task(task_id)
 if t is None:
-    print('task %s not found' % task_id)
+    print(('task %s not found' % task_id))
 else:
-    print('%s, %s, %s, %s, %s, %s->%s' % (t.get_id().split(':')[-1], t.get_operation(), t.get_Owner().get_name(), t.get_status(), t.get_Progress(), str(t.get_startTime()).split('.')[0], str(t.get_endTime()).split('.')[0]))
+    print(('%s, %s, %s, %s, %s, %s->%s' % (t.get_id().split(':')[-1], t.get_operation(), t.get_Owner().get_name(), t.get_status(), t.get_Progress(), str(t.get_startTime()).split('.')[0], str(t.get_endTime()).split('.')[0])))

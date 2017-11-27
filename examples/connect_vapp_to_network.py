@@ -4,16 +4,16 @@ from pyvcloud.vcloudair import VCA
 
 def print_vca(vca):
     if vca:
-        print 'vca token:            ', vca.token
+        print('vca token:            ', vca.token)
         if vca.vcloud_session:
-            print 'vcloud session token: ', vca.vcloud_session.token
-            print 'org name:             ', vca.vcloud_session.org
-            print 'org url:              ', vca.vcloud_session.org_url
-            print 'organization:         ', vca.vcloud_session.organization
+            print('vcloud session token: ', vca.vcloud_session.token)
+            print('org name:             ', vca.vcloud_session.org)
+            print('org url:              ', vca.vcloud_session.org_url)
+            print('organization:         ', vca.vcloud_session.organization)
         else:
-            print 'vca vcloud session:   ', vca.vcloud_session
+            print('vca vcloud session:   ', vca.vcloud_session)
     else:
-        print 'vca: ', vca
+        print('vca: ', vca)
 
 # On Demand
 host = 'iam.vchs.vmware.com'
@@ -50,14 +50,14 @@ print_vca(vca)
 
 the_vdc = vca.get_vdc(vdc)
 assert the_vdc
-print the_vdc.get_name()
+print(the_vdc.get_name())
 the_vapp = vca.get_vapp(the_vdc, vapp)
 assert the_vapp
-print the_vapp.me.name
+print(the_vapp.me.name)
 the_network = vca.get_network(vdc, network)
 assert the_network
 # this assumes that the vApp is already connected to the network so it
 # should return immediately with success
 task = the_vapp.connect_to_network(network, the_network.get_href(), 'bridged')
-print task.get_status()
+print(task.get_status())
 assert 'success' == task.get_status()

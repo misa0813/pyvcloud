@@ -299,7 +299,7 @@ def to_dict(obj,
         for key in obj.__dict__:
             result[key] = obj[key].text
     for e in exclude:
-        if e in result.keys():
+        if e in list(result.keys()):
             result.pop(e)
     return result
 
@@ -313,8 +313,8 @@ def to_camel_case(name, names):
 
 
 def stdout_xml(the_xml):
-    print(highlight(str(etree.tostring(the_xml,
+    print((highlight(str(etree.tostring(the_xml,
                                        pretty_print=True),
                         'utf-8'),
                     lexers.XmlLexer(),
-                    formatters.TerminalFormatter()))
+                    formatters.TerminalFormatter())))

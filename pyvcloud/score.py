@@ -19,7 +19,7 @@ import os
 import tempfile
 import shutil
 import tarfile
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import contextlib
 
 from os.path import expanduser
@@ -174,7 +174,7 @@ class BlueprintsClient(object):
         query_params = {}
         if application_file_name is not None:
             query_params['application_file_name'] = (
-                urllib.quote(application_file_name))
+                urllib.parse.quote(application_file_name))
 
         uri = '/blueprints/{0}'.format(blueprint_id)
         url = '{0}{1}'.format(self.score.url, uri)
@@ -185,7 +185,7 @@ class BlueprintsClient(object):
                                            data=f, verify=self.score.verify,
                                            logger=self.logger)
 
-        if self.score.response.status_code not in range(200, 210):
+        if self.score.response.status_code not in list(range(200, 210)):
             raise exceptions.from_response(self.score.response)
         return self.score.response.json()
 
