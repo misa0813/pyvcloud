@@ -59,8 +59,8 @@ class Score(object):
                                  headers=self.get_headers(),
                                  verify=self.verify, logger=self.logger)
         Log.debug(self.logger, self.response.status_code)
-        Log.debug(self.logger, self.response.content)
-        return self.response.content
+        Log.debug(self.logger, self.response.content.decode('utf-8'))
+        return self.response.content.decode('utf-8')
 
 
 class BlueprintsClient(object):
@@ -80,7 +80,7 @@ class BlueprintsClient(object):
                                        logger=self.logger)
         if self.score.response.status_code != requests.codes.ok:
             raise exceptions.from_response(self.score.response)
-        return json.loads(self.score.response.content)
+        return json.loads(self.score.response.content.decode('utf-8'))
 
     def get(self, blueprint_id):
         self.score.response = Http.get(self.score.url +
@@ -90,7 +90,7 @@ class BlueprintsClient(object):
                                        logger=self.logger)
         if self.score.response.status_code != requests.codes.ok:
             raise exceptions.from_response(self.score.response)
-        return json.loads(self.score.response.content)
+        return json.loads(self.score.response.content.decode('utf-8'))
 
     def _write_response_stream_to_file(self, streamed_response, output_file=None,
                                        buffer_size=DEFAULT_BUFFER_SIZE):
@@ -138,7 +138,7 @@ class BlueprintsClient(object):
                                           logger=self.logger)
         if self.score.response.status_code != requests.codes.ok:
             raise exceptions.from_response(self.score.response)
-        return json.loads(self.score.response.content)
+        return json.loads(self.score.response.content.decode('utf-8'))
 
     def upload(self, blueprint_path, blueprint_id):
         self.validate(blueprint_path)
@@ -203,7 +203,7 @@ class DeploymentsClient(object):
                                        logger=self.logger)
         if self.score.response.status_code != requests.codes.ok:
             raise exceptions.from_response(self.score.response)
-        return json.loads(self.score.response.content)
+        return json.loads(self.score.response.content.decode('utf-8'))
 
     def get(self, deployment_id):
         self.score.response = Http.get(self.score.url +
@@ -213,7 +213,7 @@ class DeploymentsClient(object):
                                        logger=self.logger)
         if self.score.response.status_code != requests.codes.ok:
             raise exceptions.from_response(self.score.response)
-        return json.loads(self.score.response.content)
+        return json.loads(self.score.response.content.decode('utf-8'))
 
     def delete(self, deployment_id, force_delete=False):
 
@@ -226,7 +226,7 @@ class DeploymentsClient(object):
 
         if self.score.response.status_code != requests.codes.ok:
             raise exceptions.from_response(self.score.response)
-        return json.loads(self.score.response.content)
+        return json.loads(self.score.response.content.decode('utf-8'))
 
     def create(self, blueprint_id, deployment_id, inputs=None):
         data = {
@@ -244,7 +244,7 @@ class DeploymentsClient(object):
                                        logger=self.logger)
         if self.score.response.status_code != requests.codes.ok:
             raise exceptions.from_response(self.score.response)
-        return json.loads(self.score.response.content)
+        return json.loads(self.score.response.content.decode('utf-8'))
 
     def outputs(self, deployment_id):
         headers = self.score.get_headers()
@@ -257,7 +257,7 @@ class DeploymentsClient(object):
 
         if self.score.response.status_code != requests.codes.ok:
             raise exceptions.from_response(self.score.response)
-        return json.loads(self.score.response.content)
+        return json.loads(self.score.response.content.decode('utf-8'))
 
 
 class ExecutionsClient(object):
@@ -276,7 +276,7 @@ class ExecutionsClient(object):
             Log.error(self.logger, 'list executions returned %s' %
                       self.score.response.status_code)
             raise exceptions.from_response(self.score.response)
-        return json.loads(self.score.response.content)
+        return json.loads(self.score.response.content.decode('utf-8'))
 
     def start(self, deployment_id, workflow_id, parameters=None,
               allow_custom_parameters=False, force=False):
@@ -296,7 +296,7 @@ class ExecutionsClient(object):
                                         logger=self.logger)
         if self.score.response.status_code != requests.codes.ok:
             raise exceptions.from_response(self.score.response)
-        return json.loads(self.score.response.content)
+        return json.loads(self.score.response.content.decode('utf-8'))
 
     def cancel(self, execution_id, force=False):
         data = {
@@ -313,7 +313,7 @@ class ExecutionsClient(object):
         )
         if self.score.response.status_code != requests.codes.ok:
             raise exceptions.from_response(self.score.response)
-        return json.loads(self.score.response.content)
+        return json.loads(self.score.response.content.decode('utf-8'))
 
 
 class EventsClient(object):
@@ -338,4 +338,4 @@ class EventsClient(object):
                                        logger=self.logger)
         if self.score.response.status_code != requests.codes.ok:
             raise exceptions.from_response(self.score.response)
-        return json.loads(self.score.response.content)
+        return json.loads(self.score.response.content.decode('utf-8'))

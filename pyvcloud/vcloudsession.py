@@ -71,7 +71,7 @@ class VCS(object):
             if self.response.status_code == requests.codes.ok:
                 self.token = token
                 self.organization = organizationType.parseString(
-                    self.response.content, True)
+                    self.response.content.decode('utf-8'), True)
                 return True
             else:
                 return False
@@ -91,7 +91,7 @@ class VCS(object):
             if self.response.status_code == requests.codes.ok:
                 self.token = self.response.headers["x-vcloud-authorization"]
                 self.session = sessionType.parseString(
-                    self.response.content, True)
+                    self.response.content.decode('utf-8'), True)
                 self.org_url = [link for link in self.session.Link if link.type_ == 'application/vnd.vmware.vcloud.org+xml'][0].href
                 return True
             else:
@@ -111,7 +111,7 @@ class VCS(object):
         headers["Accept"] = "application/*+xml;version=" + self.version
         self.response = Http.get(self.url, headers=headers, verify=self.verify, logger=self.logger)
         if self.response.status_code == requests.codes.ok:
-            self.session = sessionType.parseString(self.response.content, True)
+            self.session = sessionType.parseString(self.response.content.decode('utf-8'), True)
             self.org_url = [link for link in self.session.Link if link.type_ == 'application/vnd.vmware.vcloud.org+xml'][0].href
             self.username = self.session.get_user()
             self.user_id = self.session.get_userId().split(':')[-1]
@@ -120,7 +120,7 @@ class VCS(object):
             self.response = Http.get(self.org_url, headers=headers, verify=self.verify, logger=self.logger)
             if self.response.status_code == requests.codes.ok:
                 self.token = token
-                self.organization = organizationType.parseString(self.response.content, True)
+                self.organization = organizationType.parseString(self.response.content.decode('utf-8'), True)
                 return True
             else:
                 return False

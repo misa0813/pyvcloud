@@ -368,11 +368,11 @@ def _get_session_endpoints(session):
 
 
 def _response_has_content(response):
-    return response.content is not None and len(response.content) > 0
+    return response.content.decode('utf-8') is not None and len(response.content.decode('utf-8')) > 0
 
 
 def _objectify_response(response):
-    return objectify.fromstring(response.content) \
+    return objectify.fromstring(response.content.decode('utf-8')) \
         if _response_has_content(response) else None
 
 
@@ -525,7 +525,7 @@ class Client(object):
         sc = response.status_code
         if sc != 200:
             raise Exception('Unable to get supported API versions.')
-        return objectify.fromstring(response.content)
+        return objectify.fromstring(response.content.decode('utf-8'))
 
     def set_highest_supported_version(self):
         versions = self.get_supported_versions()
@@ -565,7 +565,7 @@ class Client(object):
                 r) if r is not None else \
                 Exception("Unknown login failure")
 
-        session = objectify.fromstring(response.content)
+        session = objectify.fromstring(response.content.decode('utf-8'))
         self._session_endpoints = _get_session_endpoints(session)
 
         self._session = new_session
@@ -597,7 +597,7 @@ class Client(object):
                 _objectify_response(response)) if sc == 401 else \
                 Exception("Unknown login failure")
 
-        session = objectify.fromstring(response.content)
+        session = objectify.fromstring(response.content.decode('utf-8'))
         self._session_endpoints = _get_session_endpoints(session)
         self._session = new_session
         self._session.headers['x-vcloud-authorization'] = \
@@ -632,13 +632,13 @@ class Client(object):
 
         if 200 <= sc <= 299:
             return _objectify_response(response) if objectify_results else \
-                etree.fromstring(response.content)
+                etree.fromstring(response.content.decode('utf-8'))
 
         if 400 <= sc <= 499:
             raise VcdErrorResponseException(
                 sc,
                 self._get_response_request_id(response),
-                objectify.fromstring(response.content))
+                objectify.fromstring(response.content.decode('utf-8')))
 
         raise Exception("Unsupported HTTP status code (%d) encountered" % sc)
 
@@ -694,12 +694,12 @@ class Client(object):
                                response.headers)
         if self._log_bodies and _response_has_content(response):
             if sys.version_info[0] < 3:
-                d = response.content
+                d = response.content.decode('utf-8')
             else:
-                if isinstance(response.content, str):
-                    d = response.content
+                if isinstance(response.content.decode('utf-8'), str):
+                    d = response.content.decode('utf-8')
                 else:
-                    d = response.content.decode(self.fsencoding)
+                    d = response.content.decode('utf-8').decode(self.fsencoding)
             self._logger.debug('Response body: %s' % d)
         return response
 
@@ -726,7 +726,7 @@ class Client(object):
                                response.headers)
         if self._log_bodies and _response_has_content(response):
             self._logger.debug('Response body: %s' %
-                               response.content)
+                               response.content.decode('utf-8'))
         return response
 
     def download_from_uri(self,

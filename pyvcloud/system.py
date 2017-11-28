@@ -38,7 +38,7 @@ class System(object):
         self.response = Http.get(link[0].get_href(), headers=self.vcloud_session.get_vcloud_headers(),
                                  verify=self.verify, logger=self.logger)
         if self.response.status_code == requests.codes.ok:
-            organizations = organizationListType.parseString(self.response.content, True)
+            organizations = organizationListType.parseString(self.response.content.decode('utf-8'), True)
             for org in organizations.get_Org():
                 orgs.append({'name': org.get_name(), 'href': org.get_href()})
             return orgs
@@ -54,7 +54,7 @@ class System(object):
         self.response = Http.get(link[0].get_href() + '/service/query', headers=self.vcloud_session.get_vcloud_headers(),
                                  verify=self.verify, logger=self.logger)
         if self.response.status_code == requests.codes.ok:
-            doc = ET.fromstring(self.response.content)
+            doc = ET.fromstring(self.response.content.decode('utf-8'))
             return doc
         else:
             raise Exception(self.response.status_code)
@@ -66,16 +66,16 @@ class System(object):
                                  headers=self.vcloud_session.get_vcloud_headers(),
                                  verify=self.verify, logger=self.logger)
         if self.response.status_code == requests.codes.ok:
-            result = queryRecordViewType.parseString(self.response.content, True)
+            result = queryRecordViewType.parseString(self.response.content.decode('utf-8'), True)
             for t in result.get_Record():
                 if name == t.get_name():
                     # return {'name': t.get_name(), 'href': t.get_href()}
                     self.response = Http.get(t.get_href(), headers=self.vcloud_session.get_vcloud_headers(),
                                              verify=self.verify, logger=self.logger)
                     if self.response.status_code == requests.codes.ok:
-                        doc = ET.fromstring(self.response.content)
+                        doc = ET.fromstring(self.response.content.decode('utf-8'))
                         return doc
-                        # print(self.response.content)
+                        # print(self.response.content.decode('utf-8'))
                         # return {'name': t.get_name(), 'href': t.get_href()}
             return None
         else:
@@ -106,7 +106,7 @@ class System(object):
                                   data=extension_metadata,
                                   verify=self.verify, logger=self.logger)
         if self.response.status_code == requests.codes.created:
-            doc = ET.fromstring(self.response.content)
+            doc = ET.fromstring(self.response.content.decode('utf-8'))
             return doc
         else:
             raise Exception(self.response.status_code)
@@ -124,7 +124,7 @@ class System(object):
                                  data=extension_metadata,
                                  verify=self.verify, logger=self.logger)
         if self.response.status_code == requests.codes.ok:
-            return self.response.content
+            return self.response.content.decode('utf-8')
         else:
             raise Exception(self.response.status_code)
 
@@ -132,6 +132,6 @@ class System(object):
         self.response = Http.delete(href, headers=self.vcloud_session.get_vcloud_headers(),
                                  verify=self.verify, logger=self.logger)
         if self.response.status_code == requests.codes.no_content:
-            return self.response.content
+            return self.response.content.decode('utf-8')
         else:
             raise Exception(self.response.status_code)

@@ -46,7 +46,7 @@ class Task(object):
                     verify=self.verify,
                     logger=self.logger)
                 if self.response.status_code == requests.codes.ok:
-                    return tasksListType.parseString(self.response.content,
+                    return tasksListType.parseString(self.response.content.decode('utf-8'),
                                                      True)
                 else:
                     raise Exception(self.response.status_code)
@@ -117,7 +117,7 @@ class Task(object):
                     logger=self.logger,
                     data=data)
             if self.response.status_code == requests.codes.ok:
-                return taskType.parseString(self.response.content, True)
+                return taskType.parseString(self.response.content.decode('utf-8'), True)
             else:
                 raise Exception(self.response.status_code)
         return None
@@ -131,7 +131,7 @@ class Task(object):
                 verify=self.verify,
                 logger=self.logger)
             if self.response.status_code == requests.codes.ok:
-                return taskType.parseString(self.response.content, True)
+                return taskType.parseString(self.response.content.decode('utf-8'), True)
             else:
                 raise Exception(self.response.status_code)
         return None

@@ -149,7 +149,7 @@ class VCA(object):
         if response.status_code == requests.codes.ok:
             try:
                 supported_versions = versionsType.parseString(
-                    response.content, True)
+                    response.content.decode('utf-8'), True)
                 return VCA.VCA_SERVICE_TYPE_STANDALONE
             except:
                 pass
@@ -166,7 +166,7 @@ class VCA(object):
             verify=self.verify,
             logger=self.logger)
         if response.status_code == requests.codes.ok:
-            return serviceType.parseString(response.content, True)
+            return serviceType.parseString(response.content.decode('utf-8'), True)
 
     def login(self, password=None, token=None, org=None, org_url=None):
         """
@@ -194,7 +194,7 @@ class VCA(object):
                     logger=self.logger)
                 if self.response.status_code == requests.codes.ok:
                     self.services = serviceType.parseString(
-                        self.response.content, True)
+                        self.response.content.decode('utf-8'), True)
                     self.token = token
                     return True
                 else:
@@ -306,9 +306,9 @@ class VCA(object):
                 verify=self.verify,
                 logger=self.logger)
         if self.response.status_code == requests.codes.ok:
-            return json.loads(self.response.content)['serviceGroupList']
+            return json.loads(self.response.content.decode('utf-8'))['serviceGroupList']
         else:
-            error = errorType.parseString(self.response.content, True)
+            error = errorType.parseString(self.response.content.decode('utf-8'), True)
             raise Exception(error.message)
 
     def get_plans(self):
@@ -336,9 +336,9 @@ class VCA(object):
                 verify=self.verify,
                 logger=self.logger)
         if self.response.status_code == requests.codes.ok:
-            return json.loads(self.response.content)['plans']
+            return json.loads(self.response.content.decode('utf-8'))['plans']
         else:
-            error = errorType.parseString(self.response.content, True)
+            error = errorType.parseString(self.response.content.decode('utf-8'), True)
             raise Exception(error.message)
 
     def get_plan(self, plan_id):
@@ -368,9 +368,9 @@ class VCA(object):
                 verify=self.verify,
                 logger=self.logger)
         if self.response.status_code == requests.codes.ok:
-            return json.loads(self.response.content)
+            return json.loads(self.response.content.decode('utf-8'))
         else:
-            error = errorType.parseString(self.response.content, True)
+            error = errorType.parseString(self.response.content.decode('utf-8'), True)
             raise Exception(error.message)
 
     def get_users(self):
@@ -391,9 +391,9 @@ class VCA(object):
             verify=self.verify,
             logger=self.logger)
         if self.response.status_code == requests.codes.ok:
-            return json.loads(self.response.content)['users']
+            return json.loads(self.response.content.decode('utf-8'))['users']
         else:
-            error = errorType.parseString(self.response.content, True)
+            error = errorType.parseString(self.response.content.decode('utf-8'), True)
             raise Exception(error.message)
 
     def add_user(self, email, given_name, family_name, roles):
@@ -446,9 +446,9 @@ class VCA(object):
             verify=self.verify,
             logger=self.logger)
         if self.response.status_code == requests.codes.created:
-            return json.loads(self.response.content)
+            return json.loads(self.response.content.decode('utf-8'))
         else:
-            error = errorType.parseString(self.response.content, True)
+            error = errorType.parseString(self.response.content.decode('utf-8'), True)
             raise Exception(error.message)
 
     def del_user(self, user_id):
@@ -473,7 +473,7 @@ class VCA(object):
         if self.response.status_code == requests.codes.no_content:
             return True
         else:
-            error = errorType.parseString(self.response.content, True)
+            error = errorType.parseString(self.response.content.decode('utf-8'), True)
             raise Exception(error.message)
 
     def change_password(self, current_password, new_password):
@@ -502,7 +502,7 @@ class VCA(object):
         if self.response.status_code == requests.codes.no_content:
             return True
         else:
-            error = errorType.parseString(self.response.content, True)
+            error = errorType.parseString(self.response.content.decode('utf-8'), True)
             raise Exception(error.message)
 
     def validate_user(self, email, new_password, token):
@@ -531,7 +531,7 @@ class VCA(object):
         if self.response.status_code == requests.codes.ok:
             return True
         else:
-            error = errorType.parseString(self.response.content, True)
+            error = errorType.parseString(self.response.content.decode('utf-8'), True)
             raise Exception(error.message)
 
     def reset_password(self, user_id):
@@ -552,7 +552,7 @@ class VCA(object):
         if self.response.status_code == requests.codes.no_content:
             return True
         else:
-            error = errorType.parseString(self.response.content, True)
+            error = errorType.parseString(self.response.content.decode('utf-8'), True)
             raise Exception(error.message)
 
     def get_roles(self):
@@ -573,9 +573,9 @@ class VCA(object):
             verify=self.verify,
             logger=self.logger)
         if self.response.status_code == requests.codes.ok:
-            return json.loads(self.response.content)['roles']
+            return json.loads(self.response.content.decode('utf-8'))['roles']
         else:
-            error = errorType.parseString(self.response.content, True)
+            error = errorType.parseString(self.response.content.decode('utf-8'), True)
             raise Exception(error.message)
 
     def get_instances(self):
@@ -600,9 +600,9 @@ class VCA(object):
                 verify=self.verify,
                 logger=self.logger)
         if self.response.status_code == requests.codes.ok:
-            return json.loads(self.response.content)['instances']
+            return json.loads(self.response.content.decode('utf-8'))['instances']
         else:
-            error = errorType.parseString(self.response.content, True)
+            error = errorType.parseString(self.response.content.decode('utf-8'), True)
             raise Exception(error.message)
 
     def get_instance(self, instance_id):
@@ -626,9 +626,9 @@ class VCA(object):
                 verify=self.verify,
                 logger=self.logger)
         if self.response.status_code == requests.codes.ok:
-            return json.loads(self.response.content)
+            return json.loads(self.response.content.decode('utf-8'))
         else:
-            error = errorType.parseString(self.response.content, True)
+            error = errorType.parseString(self.response.content.decode('utf-8'), True)
             raise Exception(error.message)
 
     def delete_instance(self, instance):
@@ -646,7 +646,7 @@ class VCA(object):
             headers=self._get_vcloud_headers(),
             verify=self.verify,
             logger=self.logger)
-        print((self.response.status_code, self.response.content))
+        print((self.response.status_code, self.response.content.decode('utf-8')))
 
     def login_to_instance(self, instance, password, token=None, org_url=None):
         """
@@ -732,7 +732,7 @@ class VCA(object):
                 verify=self.verify,
                 logger=self.logger)
             if self.response.status_code == requests.codes.ok:
-                Log.debug(self.logger, 'ok: ' + self.response.content)
+                Log.debug(self.logger, 'ok: ' + self.response.content.decode('utf-8'))
                 Log.debug(self.logger, 'ok: ' + str(self.response.headers))
                 vcloud_session = VCS(
                     session_uri,
@@ -752,7 +752,7 @@ class VCA(object):
                 else:
                     return False
             else:
-                Log.debug(self.logger, 'ko: ' + self.response.content)
+                Log.debug(self.logger, 'ko: ' + self.response.content.decode('utf-8'))
                 return False
         return False
 
@@ -775,7 +775,7 @@ class VCA(object):
             headers=self._get_vcloud_headers(),
             verify=self.verify,
             logger=self.logger)
-        vdcs = vchsType.parseString(self.response.content, True)
+        vdcs = vchsType.parseString(self.response.content.decode('utf-8'), True)
         return vdcs.get_VdcRef()
 
     def get_vdc_reference(self, serviceId, vdcId):
@@ -818,7 +818,7 @@ class VCA(object):
                 verify=self.verify,
                 logger=self.logger)
             if self.response.status_code == requests.codes.created:
-                vchs = vchsType.parseString(self.response.content, True)
+                vchs = vchsType.parseString(self.response.content.decode('utf-8'), True)
                 vdcLink = vchs.get_VdcLink()
                 headers = {}
                 headers[
@@ -830,7 +830,7 @@ class VCA(object):
                     verify=self.verify,
                     logger=self.logger)
                 if self.response.status_code == requests.codes.ok:
-                    self.vdc = vdcType.parseString(self.response.content, True)
+                    self.vdc = vdcType.parseString(self.response.content.decode('utf-8'), True)
                     self.org = self.vdc.name
                     org_url = [link for link in self.vdc.get_Link() if link.get_type() == "application/vnd.vmware.vcloud.org+xml"][0].href
                     vcloud_session = VCS(
@@ -889,7 +889,7 @@ class VCA(object):
                     verify=self.verify,
                     logger=self.logger)
                 if self.response.status_code == requests.codes.ok:
-                    return vdcType.parseString(self.response.content, True)
+                    return vdcType.parseString(self.response.content.decode('utf-8'), True)
 
     def get_vdc_names(self):
         """
@@ -931,7 +931,7 @@ class VCA(object):
             if self.response.status_code == requests.codes.ok:
                 vapp = VAPP(
                     vAppType.parseString(
-                        self.response.content,
+                        self.response.content.decode('utf-8'),
                         True),
                     self.vcloud_session.get_vcloud_headers(),
                     self.verify,
@@ -1155,7 +1155,7 @@ class VCA(object):
                 verify=self.verify,
                 logger=self.logger)
             if self.response.status_code == requests.codes.ok:
-                catalog = catalogType.parseString(self.response.content, True)
+                catalog = catalogType.parseString(self.response.content.decode('utf-8'), True)
                 catalog_items = [catalogItemRef for catalogItemRef in catalog.get_CatalogItems().get_CatalogItem() if catalogItemRef.get_name() == template_name]
                 if len(catalog_items) == 1:
                     self.response = Http.get(
@@ -1166,7 +1166,7 @@ class VCA(object):
                     # use ElementTree instead because none of the types inside resources (not
                     # even catalogItemType) is able to parse the response
                     # correctly
-                    catalogItem = ET.fromstring(self.response.content)
+                    catalogItem = ET.fromstring(self.response.content.decode('utf-8'))
                     entity = [child for child in catalogItem if child.get(
                         "type") == "application/vnd.vmware.vcloud.vAppTemplate+xml"][0]
                     self.response = Http.get(
@@ -1175,7 +1175,7 @@ class VCA(object):
                         verify=self.verify,
                         logger=self.logger)
                     if self.response.status_code == requests.codes.ok:
-                        vAppTemplate = ET.fromstring(self.response.content)
+                        vAppTemplate = ET.fromstring(self.response.content.decode('utf-8'))
                         for vm in vAppTemplate.iter(
                                 '{http://www.vmware.com/vcloud/v1.5}Vm'):
                             if target_vm:
@@ -1197,9 +1197,9 @@ class VCA(object):
             verify=self.verify,
             logger=self.logger)
         if self.response.status_code == requests.codes.ok:
-            return vdcTemplateListType.parseString(self.response.content, True)
+            return vdcTemplateListType.parseString(self.response.content.decode('utf-8'), True)
         else:
-            error = errorType.parseString(self.response.content, True)
+            error = errorType.parseString(self.response.content.decode('utf-8'), True)
             raise Exception(error.message)
 
     def create_vdc(self, vdc_name, vdc_template_name=None):
@@ -1231,10 +1231,10 @@ class VCA(object):
             data=body,
             logger=self.logger)
         if self.response.status_code == requests.codes.accepted:
-            task = taskType.parseString(self.response.content, True)
+            task = taskType.parseString(self.response.content.decode('utf-8'), True)
             return task
         else:
-            error = errorType.parseString(self.response.content, True)
+            error = errorType.parseString(self.response.content.decode('utf-8'), True)
             raise Exception(error.message)
 
     def delete_vdc(self, vdc_name):
@@ -1260,10 +1260,10 @@ class VCA(object):
             verify=self.verify,
             logger=self.logger)
         if self.response.status_code == requests.codes.accepted:
-            task = taskType.parseString(self.response.content, True)
+            task = taskType.parseString(self.response.content.decode('utf-8'), True)
             return (True, task)
         else:
-            return (False, self.response.content)
+            return (False, self.response.content.decode('utf-8'))
 
     def compose_vapp(
             self,
@@ -1337,11 +1337,11 @@ class VCA(object):
             data=body,
             logger=self.logger)
         if self.response.status_code == requests.codes.created:
-            vApp = vAppType.parseString(self.response.content, True)
+            vApp = vAppType.parseString(self.response.content.decode('utf-8'), True)
             task = vApp.get_Tasks().get_Task()[0]
             return task
         else:
-            error = errorType.parseString(self.response.content, True)
+            error = errorType.parseString(self.response.content.decode('utf-8'), True)
             raise Exception(error.message)
 
     def recompose_vapp(
@@ -1405,9 +1405,9 @@ class VCA(object):
             data=body,
             logger=self.logger)
         if self.response.status_code == requests.codes.accepted:
-            return taskType.parseString(self.response.content, True)
+            return taskType.parseString(self.response.content.decode('utf-8'), True)
         else:
-            error = errorType.parseString(self.response.content, True)
+            error = errorType.parseString(self.response.content.decode('utf-8'), True)
             raise Exception(error.message)
 
     def clone_vapp(
@@ -1467,11 +1467,11 @@ class VCA(object):
             data=body,
             logger=self.logger)
         if self.response.status_code == requests.codes.created:
-            vApp = vAppType.parseString(self.response.content, True)
+            vApp = vAppType.parseString(self.response.content.decode('utf-8'), True)
             task = vApp.get_Tasks().get_Task()[0]
             return task
         else:
-            error = errorType.parseString(self.response.content, True)
+            error = errorType.parseString(self.response.content.decode('utf-8'), True)
             raise Exception(error.message)
 
     def create_vapp(self, vdc_name, vapp_name, template_name, catalog_name,
@@ -1547,11 +1547,11 @@ class VCA(object):
                     verify=self.verify,
                     logger=self.logger)
                 if self.response.status_code == requests.codes.ok:
-                    task = taskType.parseString(self.response.content, True)
+                    task = taskType.parseString(self.response.content.decode('utf-8'), True)
                     progress = task.get_Progress()
                     status = task.get_status()
                 else:
-                    error = errorType.parseString(self.response.content, True)
+                    error = errorType.parseString(self.response.content.decode('utf-8'), True)
                     raise Exception(error.message)
         return True
 
@@ -1616,7 +1616,7 @@ class VCA(object):
             if self.response.status_code == requests.codes.ok:
                 catalogs.append(
                     catalogType.parseString(
-                        self.response.content, True))
+                        self.response.content.decode('utf-8'), True))
         return catalogs
 
     def create_catalog(self, catalog_name, description):
@@ -1646,7 +1646,7 @@ class VCA(object):
                 data=data,
                 logger=self.logger)
             if self.response.status_code == requests.codes.created:
-                task = vCloudEntities.parseString(self.response.content, True)
+                task = vCloudEntities.parseString(self.response.content.decode('utf-8'), True)
                 return task.get_Tasks().get_Task()[0]
 
     def delete_catalog(self, catalog_name):
@@ -1680,7 +1680,7 @@ class VCA(object):
                 logger=self.logger)
             if self.response.status_code == requests.codes.ok:
                 adminOrg = vCloudEntities.parseString(
-                    self.response.content, True)
+                    self.response.content.decode('utf-8'), True)
                 if adminOrg and adminOrg.Catalogs and adminOrg.Catalogs.CatalogReference:
                     catRefs = [ref for ref in adminOrg.Catalogs.CatalogReference if ref.name == catalog_name and ref.type_ == 'application/vnd.vmware.admin.catalog+xml']
                     if len(catRefs) == 1:
@@ -1741,7 +1741,7 @@ class VCA(object):
                 verify=self.verify,
                 logger=self.logger)
             if self.response.status_code == requests.codes.created:
-                catalogItem = ET.fromstring(self.response.content)
+                catalogItem = ET.fromstring(self.response.content.decode('utf-8'))
                 entity = [child for child in catalogItem if child.get(
                     "type") == "application/vnd.vmware.vcloud.media+xml"][0]
                 href = entity.get('href')
@@ -1751,7 +1751,7 @@ class VCA(object):
                     verify=self.verify,
                     logger=self.logger)
                 if self.response.status_code == requests.codes.ok:
-                    media = mediaType.parseString(self.response.content, True)
+                    media = mediaType.parseString(self.response.content.decode('utf-8'), True)
                     link = [link for link in media.get_Files().get_File()[0].get_Link() if link.get_rel() == 'upload:default'][0]
                     progress_bar = None
                     if display_progress:
@@ -1792,7 +1792,7 @@ class VCA(object):
                             else:
                                 Log.debug(
                                     self.logger, 'file upload failed with error: [%s] %s' %
-                                    (self.response.status_code, self.response.content))
+                                    (self.response.status_code, self.response.content.decode('utf-8')))
                                 return False
                     f.close()
                     if display_progress:
@@ -1852,7 +1852,7 @@ class VCA(object):
             logger=self.logger)
         if self.response.status_code == requests.codes.ok:
             queryResultRecords = queryRecordViewType.parseString(
-                self.response.content, True)
+                self.response.content.decode('utf-8'), True)
             if queryResultRecords.get_Record():
                 for edgeGatewayRecord in queryResultRecords.get_Record():
                     self.response = Http.get(
@@ -1863,7 +1863,7 @@ class VCA(object):
                     if self.response.status_code == requests.codes.ok:
                         gateway = Gateway(
                             networkType.parseString(
-                                self.response.content,
+                                self.response.content.decode('utf-8'),
                                 True),
                             headers=self.vcloud_session.get_vcloud_headers(),
                             verify=self.verify,
@@ -1896,7 +1896,7 @@ class VCA(object):
             logger=self.logger)
         if self.response.status_code == requests.codes.ok:
             queryResultRecords = queryRecordViewType.parseString(
-                self.response.content, True)
+                self.response.content.decode('utf-8'), True)
             if queryResultRecords.get_Record():
                 for edgeGatewayRecord in queryResultRecords.get_Record():
                     if edgeGatewayRecord.get_name() == gateway_name:
@@ -1908,7 +1908,7 @@ class VCA(object):
                         if self.response.status_code == requests.codes.ok:
                             gateway = Gateway(
                                 networkType.parseString(
-                                    self.response.content,
+                                    self.response.content.decode('utf-8'),
                                     True),
                                 headers=self.vcloud_session.get_vcloud_headers(),
                                 verify=self.verify,
@@ -1916,7 +1916,7 @@ class VCA(object):
                                 log=self.log)
                             break
         else:
-            error = errorType.parseString(self.response.content, True)
+            error = errorType.parseString(self.response.content.decode('utf-8'), True)
             raise Exception(error.message)
         return gateway
 
@@ -1942,10 +1942,10 @@ class VCA(object):
                 verify=self.verify,
                 logger=self.logger)
             if self.response.status_code == requests.codes.ok:
-                network = networkType.parseString(self.response.content, True)
+                network = networkType.parseString(self.response.content.decode('utf-8'), True)
                 result.append(network)
             else:
-                error = errorType.parseString(self.response.content, True)
+                error = errorType.parseString(self.response.content.decode('utf-8'), True)
                 raise Exception(error.message)
         return result
 
@@ -1989,12 +1989,12 @@ class VCA(object):
             logger=self.logger)
         if self.response.status_code == requests.codes.ok:
             queryResultRecords = queryRecordViewType.parseString(
-                self.response.content, True)
+                self.response.content.decode('utf-8'), True)
             if queryResultRecords.get_Record():
                 for record in queryResultRecords.get_Record():
                     result.append(record)
         else:
-            error = errorType.parseString(self.response.content, True)
+            error = errorType.parseString(self.response.content.decode('utf-8'), True)
             raise Exception(error.message)
 
         return result
@@ -2044,7 +2044,7 @@ class VCA(object):
                 verify=self.verify,
                 logger=self.logger)
             if self.response.status_code == requests.codes.ok:
-                catalog = catalogType.parseString(self.response.content, True)
+                catalog = catalogType.parseString(self.response.content.decode('utf-8'), True)
                 catalog_items = [catalogItemRef for catalogItemRef in catalog.get_CatalogItems().get_CatalogItem() if catalogItemRef.get_name() == media_name]
                 if len(catalog_items) == 1:
                     self.response = Http.get(
@@ -2052,14 +2052,14 @@ class VCA(object):
                         headers=self.vcloud_session.get_vcloud_headers(),
                         verify=self.verify,
                         logger=self.logger)
-                    # print self.response.content
+                    # print self.response.content.decode('utf-8')
                     if self.response.status_code == requests.codes.ok:
-                        doc = self.parsexml_(self.response.content)
+                        doc = self.parsexml_(self.response.content.decode('utf-8'))
                         for element in doc._children:
                             if element.tag == '{http://www.vmware.com/vcloud/v1.5}Entity':
                                 return element.attrib
             else:
-                error = errorType.parseString(self.response.content, True)
+                error = errorType.parseString(self.response.content.decode('utf-8'), True)
                 raise Exception(error.message)
 
 # TODO: DELETE https://vchs.vmware.com/api/vchs/session
@@ -2149,11 +2149,11 @@ class VCA(object):
             verify=self.verify,
             logger=self.logger)
         if self.response.status_code == requests.codes.created:
-            network = networkType.parseString(self.response.content, True)
+            network = networkType.parseString(self.response.content.decode('utf-8'), True)
             task = network.get_Tasks().get_Task()[0]
             return (True, task)
         else:
-            return (False, self.response.content)
+            return (False, self.response.content.decode('utf-8'))
 
     def delete_vdc_network(self, vdc_name, network_name):
         """
@@ -2177,10 +2177,10 @@ class VCA(object):
             verify=self.verify,
             logger=self.logger)
         if self.response.status_code == requests.codes.accepted:
-            task = taskType.parseString(self.response.content, True)
+            task = taskType.parseString(self.response.content.decode('utf-8'), True)
             return (True, task)
         else:
-            return (False, self.response.content)
+            return (False, self.response.content.decode('utf-8'))
 
     def get_admin_network_href(self, vdc_name, network_name):
         vdc = self.get_vdc(vdc_name)
@@ -2191,7 +2191,7 @@ class VCA(object):
             verify=self.verify,
             logger=self.logger)
         queryResultRecords = queryRecordViewType.parseString(
-            self.response.content, True)
+            self.response.content.decode('utf-8'), True)
         if self.response.status_code == requests.codes.ok:
             for record in queryResultRecords.get_Record():
                 if record.name == network_name:
@@ -2272,7 +2272,7 @@ class VCA(object):
                 headers=self.vcloud_session.get_vcloud_headers(),
                 verify=self.verify,
                 logger=self.logger)
-            disk = self._parse_disk(response.content)
+            disk = self._parse_disk(response.content.decode('utf-8'))
             vms = []
             content_type = "application/vnd.vmware.vcloud.vms+xml"
             response = Http.get(
@@ -2280,8 +2280,8 @@ class VCA(object):
                 headers=self.vcloud_session.get_vcloud_headers(),
                 verify=self.verify,
                 logger=self.logger)
-            # print response.content
-            listofvms = vmsType.parseString(response.content, True)
+            # print response.content.decode('utf-8')
+            listofvms = vmsType.parseString(response.content.decode('utf-8'), True)
             for vmReference in listofvms.get_VmReference():
                 vms.append(vmReference)
             disks.append([disk, vms])
@@ -2315,7 +2315,7 @@ class VCA(object):
             storage_profile = [storage_profile for storage_profile in vdc.get_VdcStorageProfiles().get_VdcStorageProfile() if storage_profile.get_name() == storage_profile_name]
 
             if len(storage_profile) != 1:
-                return(False, self.response.content)
+                return(False, self.response.content.decode('utf-8'))
 
             storage_profile_type = VdcStorageProfileType()
             storage_profile_type.set_href(storage_profile[0].get_href())
@@ -2335,10 +2335,10 @@ class VCA(object):
             verify=self.verify,
             logger=self.logger)
         if self.response.status_code == requests.codes.created:
-            disk = self._parse_disk(self.response.content)
+            disk = self._parse_disk(self.response.content.decode('utf-8'))
             return(True, disk)
         else:
-            return(False, self.response.content)
+            return(False, self.response.content.decode('utf-8'))
 
     def delete_disk(self, vdc_name, name, id=None):
         """
@@ -2369,10 +2369,10 @@ class VCA(object):
                 verify=self.verify,
                 logger=self.logger)
             if self.response.status_code == requests.codes.accepted:
-                task = taskType.parseString(self.response.content, True)
+                task = taskType.parseString(self.response.content.decode('utf-8'), True)
                 return (True, task)
             else:
-                return(False, self.response.content)
+                return(False, self.response.content.decode('utf-8'))
         elif len(link) == 0:
             return(False, 'disk not found')
         elif len(link) > 1:
@@ -2408,7 +2408,7 @@ class VCA(object):
             verify=self.verify,
             logger=self.logger)
         if self.response.status_code == requests.codes.ok:
-            return self.response.content
+            return self.response.content.decode('utf-8')
         return None
 
     def _parse_metadata_entry(self, domain, visibility, key,
@@ -2443,7 +2443,7 @@ class VCA(object):
             verify=self.verify, logger=self.logger, \
             data=metadata)
         if self.response.status_code in [requests.codes.ok, requests.codes.accepted]:
-            return taskType.parseString(self.response.content, True)
+            return taskType.parseString(self.response.content.decode('utf-8'), True)
         return None
 
     def del_vapp_metadata(self, vapp_href, key):
@@ -2451,7 +2451,7 @@ class VCA(object):
             headers=self.vcloud_session.get_vcloud_headers(), \
             verify=self.verify, logger=self.logger)
         if self.response.status_code == requests.codes.accepted:
-            return taskType.parseString(self.response.content, True)
+            return taskType.parseString(self.response.content.decode('utf-8'), True)
         return None
 
     def query_by_metadata(self, query, object_type='vApp'):
@@ -2461,5 +2461,5 @@ class VCA(object):
             verify=self.verify, logger=self.logger)
         if self.response.status_code == requests.codes.ok:
             return queryRecordViewType.parseString(
-                self.response.content, True)
+                self.response.content.decode('utf-8'), True)
         return None

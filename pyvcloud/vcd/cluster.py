@@ -35,9 +35,9 @@ class Cluster(object):
             accept_type='application/*+json',
             auth=None)
         if response.status_code == requests.codes.ok:
-            return json.loads(response.content.decode("utf-8"))
+            return json.loads(response.content.decode('utf-8').decode("utf-8"))
         else:
-            raise Exception(json.loads(response.content))
+            raise Exception(json.loads(response.content.decode('utf-8')))
 
     def create_cluster(self, vdc, network_name, name, node_count=2,
                        storage_profile=None):
@@ -54,9 +54,9 @@ class Cluster(object):
             media_type=None,
             accept_type='application/*+json')
         if response.status_code == requests.codes.accepted:
-            return json.loads(response.content)
+            return json.loads(response.content.decode('utf-8'))
         else:
-            raise Exception(json.loads(response.content).get('message'))
+            raise Exception(json.loads(response.content.decode('utf-8')).get('message'))
 
     def delete_cluster(self, cluster_name):
         method = 'DELETE'
@@ -67,9 +67,9 @@ class Cluster(object):
             self.client._session,
             accept_type='application/*+json')
         if response.status_code == requests.codes.accepted:
-            return json.loads(response.content)
+            return json.loads(response.content.decode('utf-8'))
         else:
-            raise Exception(json.loads(response.content).get('message'))
+            raise Exception(json.loads(response.content.decode('utf-8')).get('message'))
 
     def get_config(self, cluster_name):
         method = 'GET'
@@ -85,4 +85,4 @@ class Cluster(object):
         if response.status_code == requests.codes.ok:
             return response.content.decode('utf-8').replace('\\n', '\n')[1:-1]
         else:
-            raise Exception(json.loads(response.content))
+            raise Exception(json.loads(response.content.decode('utf-8')))

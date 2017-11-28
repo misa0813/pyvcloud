@@ -96,7 +96,7 @@ class Gateway(object):
             verify=self.verify,
             logger=self.logger)
         if self.response.status_code == requests.codes.accepted:
-            task = taskType.parseString(self.response.content, True)
+            task = taskType.parseString(self.response.content.decode('utf-8'), True)
             return task
 
     def add_nat_rules(self):
@@ -494,7 +494,7 @@ class Gateway(object):
             verify=self.verify,
             logger=self.logger)
         if self.response.status_code == requests.codes.ok:
-            doc = ET.fromstring(self.response.content)
+            doc = ET.fromstring(self.response.content.decode('utf-8'))
             for element in doc.iter(
                     '{http://www.vmware.com/vcloud/v1.5}SyslogServerIp'):
                 return element.text
@@ -534,7 +534,7 @@ class Gateway(object):
             verify=self.verify,
             logger=self.logger)
         if self.response.status_code == requests.codes.accepted:
-            task = taskType.parseString(self.response.content, True)
+            task = taskType.parseString(self.response.content.decode('utf-8'), True)
             return task
 
     def _getFirewallService(self):
@@ -690,7 +690,7 @@ class Gateway(object):
         self.response = Http.put(href, data=body, headers=headers,
                                  verify=self.verify, logger=self.logger)
         if self.response.status_code == requests.codes.ok:
-            task = taskType.parseString(self.response.content, True)
+            task = taskType.parseString(self.response.content.decode('utf-8'), True)
             return task
 
     def deallocate_public_ip(self, ip_address):
@@ -710,7 +710,7 @@ class Gateway(object):
         self.response = Http.put(href, data=body, headers=headers,
                                  verify=self.verify, logger=self.logger)
         if self.response.status_code == requests.codes.ok:
-            task = taskType.parseString(self.response.content, True)
+            task = taskType.parseString(self.response.content.decode('utf-8'), True)
             return task
 
     def is_busy(self):

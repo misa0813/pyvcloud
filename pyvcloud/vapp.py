@@ -115,7 +115,7 @@ class VAPP(object):
                     verify=self.verify,
                     logger=self.logger)
             if self.response.status_code == requests.codes.accepted:
-                return taskType.parseString(self.response.content, True)
+                return taskType.parseString(self.response.content.decode('utf-8'), True)
             else:
                 Log.debug(
                     self.logger, "failed; response status=%d, content=%s" %
@@ -344,7 +344,7 @@ class VAPP(object):
                     verify=self.verify,
                     logger=self.logger)
                 if self.response.status_code == requests.codes.accepted:
-                    return taskType.parseString(self.response.content, True)
+                    return taskType.parseString(self.response.content.decode('utf-8'), True)
 
     def connect_vm(self, vm_name, network_name, connection_index,
                    connections_primary_index=None, ip_allocation_mode='DHCP',
@@ -410,7 +410,7 @@ class VAPP(object):
                     verify=self.verify,
                     logger=self.logger)
                 if self.response.status_code == requests.codes.accepted:
-                    return taskType.parseString(self.response.content, True)
+                    return taskType.parseString(self.response.content.decode('utf-8'), True)
                 else:
                     raise Exception(self.response.status_code)
 
@@ -462,7 +462,7 @@ class VAPP(object):
                         logger=self.logger)
                     if self.response.status_code == requests.codes.accepted:
                         return taskType.parseString(
-                            self.response.content, True)
+                            self.response.content.decode('utf-8'), True)
         task = TaskType()
         task.set_status("success")
         task.set_Progress("100")
@@ -517,7 +517,7 @@ class VAPP(object):
                         logger=self.logger)
                     if self.response.status_code == requests.codes.accepted:
                         return taskType.parseString(
-                            self.response.content, True)
+                            self.response.content.decode('utf-8'), True)
         task = TaskType()
         task.set_status("success")
         task.set_Progress("100")
@@ -576,7 +576,7 @@ class VAPP(object):
             verify=self.verify,
             logger=self.logger)
         if self.response.status_code == requests.codes.accepted:
-            return taskType.parseString(self.response.content, True)
+            return taskType.parseString(self.response.content.decode('utf-8'), True)
 
     def disconnect_from_networks(self):
         """
@@ -611,7 +611,7 @@ class VAPP(object):
             verify=self.verify,
             logger=self.logger)
         if self.response.status_code == requests.codes.accepted:
-            return taskType.parseString(self.response.content, True)
+            return taskType.parseString(self.response.content.decode('utf-8'), True)
 
     def disconnect_from_network(self, network_name):
         """
@@ -654,7 +654,7 @@ class VAPP(object):
                 verify=self.verify,
                 logger=self.logger)
             if self.response.status_code == requests.codes.accepted:
-                return taskType.parseString(self.response.content, True)
+                return taskType.parseString(self.response.content.decode('utf-8'), True)
 
 
     def attach_disk_to_vm(self, vm_name, disk_ref, bus_number=None, unit_number=None):
@@ -805,7 +805,7 @@ class VAPP(object):
                     verify=self.verify,
                     logger=self.logger)
                 if self.response.status_code == requests.codes.accepted:
-                    return taskType.parseString(self.response.content, True)
+                    return taskType.parseString(self.response.content.decode('utf-8'), True)
                 else:
                     Log.debug(
                         self.logger, "failed; response status=%d, content=%s" %
@@ -854,7 +854,7 @@ class VAPP(object):
                         logger=self.logger)
                     if self.response.status_code == requests.codes.accepted:
                         return taskType.parseString(
-                            self.response.content, True)
+                            self.response.content.decode('utf-8'), True)
                     else:
                         Log.debug(
                             self.logger, "response status=%d, content=%s" %
@@ -1028,7 +1028,7 @@ class VAPP(object):
                 verify=self.verify,
                 logger=self.logger)
             if self.response.status_code == requests.codes.accepted:
-                return taskType.parseString(self.response.content, True)
+                return taskType.parseString(self.response.content.decode('utf-8'), True)
             else:
                 raise Exception(self.response.status_code)
         raise Exception('can\'t find vm')
@@ -1091,7 +1091,7 @@ class VAPP(object):
                     verify=self.verify,
                     logger=self.logger)
                 if self.response.status_code == requests.codes.accepted:
-                    return taskType.parseString(self.response.content, True)
+                    return taskType.parseString(self.response.content.decode('utf-8'), True)
                 else:
                     raise Exception(self.response.status_code)
         raise Exception('can\'t find vm')
@@ -1149,7 +1149,7 @@ class VAPP(object):
                     verify=self.verify,
                     logger=self.logger)
                 if self.response.status_code == requests.codes.accepted:
-                    return taskType.parseString(self.response.content, True)
+                    return taskType.parseString(self.response.content.decode('utf-8'), True)
                 else:
                     raise Exception(self.response.status_code)
         raise Exception('can\'t find vm')
@@ -1175,9 +1175,9 @@ class VAPP(object):
                 self.response = Http.get(href, headers=headers, verify=self.verify, logger=self.logger)
                 diskItemsList = None
                 if self.response.status_code == requests.codes.ok:
-                    diskItemsList = vcloudType.parseString(self.response.content, True)
+                    diskItemsList = vcloudType.parseString(self.response.content.decode('utf-8'), True)
                 else:
-                    error = errorType.parseString(self.response.content, True)
+                    error = errorType.parseString(self.response.content.decode('utf-8'), True)
                     raise Exception(error.message)
 
                 disks = [x for x in diskItemsList.get_Item() if x.get_Description().get_valueOf_() == 'Hard disk']
@@ -1232,9 +1232,9 @@ class VAPP(object):
                     verify=self.verify,
                     logger=self.logger)
                 if self.response.status_code == requests.codes.accepted:
-                    return taskType.parseString(self.response.content, True)
+                    return taskType.parseString(self.response.content.decode('utf-8'), True)
                 else:
-                    error = errorType.parseString(self.response.content, True)
+                    error = errorType.parseString(self.response.content.decode('utf-8'), True)
                     raise Exception(error.message)
         raise Exception('can\'t find vm')
 
