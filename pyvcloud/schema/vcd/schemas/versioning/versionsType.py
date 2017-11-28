@@ -82,6 +82,15 @@ def parsexml_(*args, **kwargs):
     doc = etree_.parse(*args, **kwargs)
     return doc
 
+def xml_from_string_(*args, **kwargs):
+    if (XMLParser_import_library == XMLParser_import_lxml and
+            'parser' not in kwargs):
+        # Use the lxml ElementTree compatible parser so that, e.g.,
+        #   we ignore comments.
+        kwargs['parser'] = etree_.ETCompatXMLParser()
+    doc = etree_.fromstring(*args, **kwargs)
+    return doc
+
 #
 # User methods
 #
@@ -1228,7 +1237,7 @@ def parseEtree(inFileName, silence=False):
 
 def parseString(inString, silence=False):
     from io import StringIO
-    doc = parsexml_(StringIO(inString))
+    doc = xml_from_string_(inString)
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
     if rootClass is None:
